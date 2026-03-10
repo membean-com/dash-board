@@ -26,7 +26,8 @@
         #admin-panel { position: fixed; inset: 0; background: #020617; z-index: 15000; padding: 40px; overflow-y: auto; }
         #maintenance-screen { position: fixed; inset: 0; background: #0b0e14; z-index: 18000; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
         .hidden { display: none !important; }
-        .vote-btn { cursor: pointer; transition: 0.2s; background: rgba(255,255,255,0.05); padding: 4px 10px; border-radius: 8px; font-size: 11px; }
+        .vote-btn { cursor: pointer; transition: 0.2s; background: rgba(255,255,255,0.05); padding: 4px 12px; border-radius: 8px; font-size: 11px; font-weight: bold; border: 1px solid rgba(255,255,255,0.1); }
+        .vote-btn:hover { background: rgba(255,255,255,0.1); }
         .chat-bubble { background: rgba(255,255,255,0.05); padding: 10px; border-radius: 12px; margin-bottom: 6px; border: 1px solid rgba(255,255,255,0.03); }
     </style>
 </head>
@@ -36,8 +37,8 @@
 
     <div id="maintenance-screen" class="hidden">
         <i class="fa-solid fa-lock text-red-500 text-6xl mb-6"></i>
-        <h1 class="text-3xl font-800 text-white uppercase">Maintenance</h1>
-        <p class="text-slate-500 mt-2">Server Locked. Code: 1919</p>
+        <h1 class="text-3xl font-800 text-white uppercase">System Locked</h1>
+        <p class="text-slate-500 mt-2">Locked by Admin. Code: 1919</p>
     </div>
 
     <!-- CLOAK -->
@@ -47,9 +48,9 @@
             <p class="text-gray-700 font-medium mb-6">Please sign in to continue</p>
             <div class="text-left">
                 <label class="text-sm font-bold text-gray-600">Email or Username</label>
-                <input type="text" class="mb-input">
+                <input type="text" class="mb-input" placeholder="User ID">
                 <label class="text-sm font-bold text-gray-600">Password</label>
-                <input type="password" class="mb-input">
+                <input type="password" class="mb-input" placeholder="••••••••">
             </div>
             <div class="mb-btn">Sign In <i class="fa-solid fa-chevron-right text-xs"></i></div>
             <div class="text-sm mt-2">
@@ -66,17 +67,17 @@
         <div class="mb-card !bg-[#1a202c] !text-white border border-white/10 !max-w-md">
             <h2 class="text-2xl font-800 uppercase text-indigo-400 mb-6 tracking-tighter">Registration</h2>
             <div class="bg-black/40 p-4 rounded-xl mb-4 border border-indigo-500/20">
-                <p class="text-[10px] uppercase font-bold text-slate-500">Random Handle</p>
+                <p class="text-[10px] uppercase font-bold text-slate-500">Auto Handle</p>
                 <p id="assigned-handle" class="text-xl font-bold">...</p>
             </div>
-            <input type="text" id="real-name-input" class="w-full bg-slate-800 border border-slate-700 p-4 rounded-xl mb-4 outline-none" placeholder="Real Name (For Admins Only)">
-            <button onclick="finishOnboarding()" class="w-full bg-indigo-600 py-4 rounded-xl font-bold uppercase">Enter</button>
+            <input type="text" id="real-name-input" class="w-full bg-slate-800 border border-slate-700 p-4 rounded-xl mb-4 outline-none text-white" placeholder="Full Real Name (Admin Only)">
+            <button onclick="finishOnboarding()" class="w-full bg-indigo-600 py-4 rounded-xl font-bold uppercase">Enter Pillow</button>
         </div>
     </div>
 
     <!-- MAIN APP -->
     <div id="main-app" class="hidden">
-        <div id="broadcast-banner" class="hidden bg-red-600 text-white text-center p-2 text-[10px] font-bold uppercase"></div>
+        <div id="broadcast-banner" class="hidden bg-red-600 text-white text-center p-2 text-[10px] font-bold uppercase tracking-widest"></div>
         <nav class="glass sticky top-0 z-50 px-8 py-4 flex justify-between items-center text-white">
             <div class="flex items-center space-x-3">
                 <div class="bg-indigo-600 p-2 rounded-lg"><i class="fa-solid fa-couch"></i></div>
@@ -101,64 +102,64 @@
                     <h2 id="chat-header" class="text-indigo-400 font-800 uppercase mb-4 text-xs">Global Lobby</h2>
                     <div id="chat-box" class="flex-grow overflow-y-auto space-y-2 mb-4 pr-2"></div>
                     <div class="flex gap-4">
-                        <input type="text" id="chat-input" class="flex-grow bg-slate-900 p-4 rounded-2xl outline-none" placeholder="Chat here...">
-                        <button onclick="sendChat()" class="bg-indigo-600 px-10 rounded-2xl font-bold uppercase">Send</button>
+                        <input type="text" id="chat-input" class="flex-grow bg-slate-900 p-4 rounded-2xl outline-none text-white" placeholder="Auto-wipe in 7:30...">
+                        <button onclick="sendChat()" class="bg-indigo-600 px-10 rounded-2xl font-bold uppercase text-white">Send</button>
                     </div>
                 </div>
             </div>
 
             <div id="player-page" class="hidden">
-                <button onclick="showPage('home')" class="text-white mb-4 uppercase font-bold text-xs"><i class="fa-solid fa-arrow-left"></i> Back</button>
+                <button onclick="showPage('home')" class="text-white mb-4 uppercase font-bold text-xs"><i class="fa-solid fa-arrow-left"></i> Exit</button>
                 <div id="game-container" class="w-full h-[75vh] bg-black rounded-[30px] overflow-hidden border-4 border-white/5"></div>
                 <div class="mt-10 max-w-3xl pb-20">
-                    <h3 class="text-xl font-800 text-indigo-400 uppercase mb-6">Discussion</h3>
-                    <div class="glass p-6 rounded-3xl mb-8">
-                        <textarea id="comment-input" class="w-full bg-slate-900 p-4 rounded-xl h-24 mb-4 outline-none" placeholder="Comment..."></textarea>
-                        <button onclick="postComment()" class="bg-indigo-600 px-8 py-3 rounded-xl font-bold uppercase">Post</button>
+                    <h3 class="text-xl font-800 text-indigo-400 uppercase mb-6 tracking-tighter">Discussion</h3>
+                    <div class="glass p-6 rounded-3xl mb-8 border border-white/5">
+                        <textarea id="comment-input" class="w-full bg-slate-900 p-4 rounded-xl h-24 mb-4 outline-none text-white border border-white/10" placeholder="Post a comment..."></textarea>
+                        <button onclick="postComment()" class="bg-indigo-600 px-8 py-3 rounded-xl font-bold uppercase text-white shadow-lg">Post</button>
                     </div>
                     <div id="comment-list" class="space-y-4"></div>
                 </div>
             </div>
 
             <div id="logs-page" class="hidden max-w-2xl mx-auto space-y-4">
-                <h2 class="text-2xl font-800 uppercase mb-6">Update Logs</h2>
+                <h2 class="text-2xl font-800 uppercase mb-6 tracking-tighter">System Logs</h2>
                 <div id="log-container" class="space-y-4"></div>
             </div>
 
             <div id="request-page" class="hidden max-w-md mx-auto text-center py-20">
-                <h2 class="text-2xl font-800 uppercase mb-6">Request Game</h2>
-                <input type="text" id="req-val" class="w-full bg-slate-900 p-4 rounded-xl mb-4" placeholder="Game title...">
-                <button onclick="submitRequest()" class="w-full bg-indigo-600 py-4 rounded-xl font-bold uppercase">Submit</button>
+                <h2 class="text-2xl font-800 uppercase mb-6 tracking-tighter">Request Library Game</h2>
+                <input type="text" id="req-val" class="w-full bg-slate-900 p-4 rounded-xl mb-4 border border-white/10 text-white" placeholder="Enter title...">
+                <button onclick="submitRequest()" class="w-full bg-indigo-600 py-4 rounded-xl font-bold uppercase text-white">Submit Request</button>
             </div>
         </main>
     </div>
 
-    <!-- ADMIN -->
+    <!-- ADMIN PANEL -->
     <div id="admin-panel" class="hidden text-white">
         <div class="flex justify-between items-center mb-10">
-            <h2 class="text-2xl font-800 text-indigo-400 uppercase">Command Center</h2>
-            <button onclick="toggleAdmin(false)" class="bg-white/10 px-6 py-2 rounded-xl">CLOSE</button>
+            <h2 class="text-2xl font-800 text-indigo-400 uppercase tracking-tighter">Command Terminal</h2>
+            <button onclick="toggleAdmin(false)" class="bg-white/10 px-6 py-2 rounded-xl text-xs uppercase font-bold">Close</button>
         </div>
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            <div class="bg-white/5 p-6 rounded-3xl h-80 overflow-y-auto">
-                <h3 class="text-xs uppercase text-green-400 font-bold mb-4">Users & Real Names</h3>
+            <div class="bg-white/5 p-6 rounded-3xl h-80 overflow-y-auto border border-white/5">
+                <h3 class="text-xs uppercase text-green-400 font-bold mb-4 tracking-widest">User Database (Real Names)</h3>
                 <div id="admin-user-list" class="space-y-1 text-sm"></div>
             </div>
-            <div class="bg-white/5 p-6 rounded-3xl h-80 overflow-y-auto">
-                <h3 class="text-xs uppercase text-red-400 font-bold mb-4">Snap Spy (All DMs/Chats)</h3>
-                <div id="admin-chat-spy" class="space-y-1 text-[10px] font-mono"></div>
+            <div class="bg-white/5 p-6 rounded-3xl h-80 overflow-y-auto border border-white/5">
+                <h3 class="text-xs uppercase text-red-400 font-bold mb-4 tracking-widest">Live Spy & Vault (All DMs/Chats)</h3>
+                <div id="admin-chat-spy" class="space-y-1 text-[10px] font-mono text-slate-400"></div>
             </div>
-            <div class="bg-white/5 p-6 rounded-3xl col-span-full">
-                <h3 class="text-xs uppercase text-indigo-400 font-bold mb-4">Tools</h3>
-                <input type="text" id="bc-msg" class="w-full bg-black p-4 rounded-xl mb-4" placeholder="Broadcast/Log Text">
+            <div class="bg-white/5 p-6 rounded-3xl col-span-full border border-white/5">
+                <h3 class="text-xs uppercase text-indigo-400 font-bold mb-4">Post Announcement / Update Log</h3>
+                <input type="text" id="bc-msg" class="w-full bg-black p-4 rounded-xl mb-4 border border-white/10 text-white" placeholder="Broadcast/Log message content...">
                 <div class="flex gap-4">
-                    <button onclick="sendBroadcast()" class="bg-red-600 px-6 py-2 rounded-lg font-bold">SET BROADCAST</button>
-                    <button onclick="addLog()" class="bg-indigo-600 px-6 py-2 rounded-lg font-bold">ADD LOG</button>
-                    <button onclick="db.ref('requests').on('value', s => renderAdminReqs(s.val()))" class="bg-yellow-600 px-6 py-2 rounded-lg font-bold">VIEW REQUESTS</button>
+                    <button onclick="sendBroadcast()" class="bg-red-600 px-6 py-2 rounded-lg font-bold text-xs uppercase">SET BROADCAST</button>
+                    <button onclick="addLog()" class="bg-indigo-600 px-6 py-2 rounded-lg font-bold text-xs uppercase">ADD UPDATE LOG</button>
+                    <button onclick="document.getElementById('admin-req-display').classList.toggle('hidden')" class="bg-yellow-600 px-6 py-2 rounded-lg font-bold text-xs uppercase">VIEW REQUESTS</button>
                 </div>
             </div>
-            <div id="admin-req-display" class="bg-white/5 p-6 rounded-3xl col-span-full hidden">
-                <h3 class="font-bold text-yellow-400 mb-4 text-xs uppercase">Game Requests</h3>
+            <div id="admin-req-display" class="bg-white/5 p-6 rounded-3xl col-span-full hidden border border-yellow-500/20">
+                <h3 class="font-bold text-yellow-400 mb-4 text-xs uppercase">Game Request Hub</h3>
                 <div id="admin-req-list" class="space-y-2"></div>
             </div>
         </div>
@@ -183,20 +184,30 @@
         const FILTER = ["fuck", "nigger", "shit", "bitch", "retard", "faggot", "slut", "cum", "sex"];
 
         const GAMES = [
+            { n: "House of Hazards", u: "https://lolygames.github.io/house-of-hazards/", s: "A crazy house", t: "2 Player", i: "https://i.ibb.co/Lz0H0tRr/house-of-hazards-16x9-cover.avif" },
             { n: "Granny", u: "https://1games.io/game/granny-horror/", s: "Survive the granny", t: "Horror", i: "https://i.ibb.co/8Db8BL5V/enlarged.jpg" },
             { n: "Basket Battle", u: "https://html5.gamedistribution.com/rvvASMiM/d7e65a097a6a4c8fb578af5fc0e163ca/", s: "Competitive Dunking", t: "Sports", i: "https://i.ibb.co/21V6w5HT/basket-battle-zmg-16x9-cover.avif" },
             { n: "Retro Bowl", u: "https://game316009.konggames.com/gamez/0031/6009/live/index.html", s: "NFL Strategy", t: "Sports", i: "https://i.ibb.co/dJWtJSfH/retro-bowl.jpg" },
-            { n: "Slope", u: "https://slope-unblocked-10x.github.io/action-games/slope/", s: "Fast ball", t: "Skill", i: "https://i.ibb.co/jvNVVNdD/slope.jpg" },
-            { n: "Wordle", u: "https://1games.io/game/wordle/", s: "Daily guess", t: "Word", i: "https://i.ibb.co/WCd0hfG/wordle-logo.webp" },
-            { n: "Space Waves", u: "https://spacewavesgame.io/game/space-waves/", s: "Neon rhythm", t: "Skill", i: "https://i.ibb.co/tPM9Vywg/space-waves-f546x307.webp" },
-            { n: "Subway Surfers", u: "https://slope-unblocked-10x.github.io/action-games/subway-surfers/", s: "Run forever", t: "Runner", i: "https://i.ibb.co/rR7BSCqr/subway-surfers-header2.avif" },
-            { n: "BitLife", u: "https://slope-unblocked-10x.github.io/strategy-games/bitlife/", s: "Simulate life", t: "Sim", i: "https://i.ibb.co/QFJ1TCwr/bitlife.jpg" },
-            { n: "FNAF 1", u: "https://run3.io/popgame/fnaf/fnaf1/", s: "Horror night", t: "Horror", i: "https://i.ibb.co/3gtbVRb/fnaf1-png.jpg" },
-            { n: "Stickman Hook", u: "https://stickmanhook2.io/game/stickman-hook/", s: "Physics swing", t: "Physics", i: "https://i.ibb.co/F4b6JnSZ/stick-hook-game1.png" },
-            { n: "Geometry Dash", u: "https://1games.io/game/geometry-dash-lite/", s: "Jump to beat", t: "Rhythm", i: "https://i.ibb.co/9mQ3RBZK/geometrydash.webp" },
+            { n: "Slope", u: "https://slope-unblocked-10x.github.io/action-games/slope/", s: "High speed ball", t: "Skill", i: "https://i.ibb.co/jvNVVNdD/slope.jpg" },
+            { n: "Wordle", u: "https://1games.io/game/wordle/", s: "Daily word guess", t: "Word", i: "https://i.ibb.co/WCd0hfG/wordle-logo.webp" },
+            { n: "Space Waves", u: "https://spacewavesgame.io/game/space-waves/", s: "Neon rhythm arcade", t: "Skill", i: "https://i.ibb.co/tPM9Vywg/space-waves-f546x307.webp" },
+            { n: "Subway Surfers", u: "https://slope-unblocked-10x.github.io/action-games/subway-surfers/", s: "Train dodging", t: "Runner", i: "https://i.ibb.co/rR7BSCqr/subway-surfers-header2.avif" },
+            { n: "FNAF 1", u: "https://run3.io/popgame/fnaf/fnaf1/", s: "The Original Night", t: "Horror", i: "https://i.ibb.co/3gtbVRb/fnaf1-png.jpg" },
+            { n: "BitLife", u: "https://slope-unblocked-10x.github.io/strategy-games/bitlife/", s: "Live a virtual life", t: "Sim", i: "https://i.ibb.co/QFJ1TCwr/bitlife.jpg" },
             { n: "Minecraft", u: "https://precisionclient.pages.dev/", s: "Creative Web", t: "Creative", i: "https://i.ibb.co/9mQ3RBZK/geometrydash.webp" },
-            { n: "Temple Run 2", u: "https://azgames.io/game/temple-run-2/", s: "Classic runner", t: "Action", i: "https://i.ibb.co/HTYDJmRP/748a24b37754e55d3a08829d0056ce68-fgraphic.png" }
-            // All other 21 games go here in same format
+            { n: "Stickman Hook", u: "https://stickmanhook2.io/game/stickman-hook/", s: "Grappling physics", t: "Physics", i: "https://i.ibb.co/F4b6JnSZ/stick-hook-game1.png" },
+            { n: "Geometry Dash", u: "https://1games.io/game/geometry-dash-lite/", s: "Jump to beat", t: "Rhythm", i: "https://i.ibb.co/9mQ3RBZK/geometrydash.webp" },
+            { n: "Rooftop Snipers", u: "https://slope-unblocked-10x.github.io/action-games/rooftop-snipers/", s: "Physics duels", t: "2 Player", i: "https://i.ibb.co/msT16PH/unnamed.webp" },
+            { n: "Monster Tracks", u: "https://class811.github.io/g5/monster-tracks", s: "4x4 Driving", t: "Driving", i: "https://i.ibb.co/TBR30PKS/Monster-Tracks-Games.jpg" },
+            { n: "Ragdoll Archers", u: "https://jasongamesdev.github.io/ragdoll-archers/", s: "Physics bow combat", t: "Action", i: "https://i.ibb.co/7dkK7ZfJ/ragdollarchers.jpg" },
+            { n: "Terraria", u: "https://slope-unblocked-10x.github.io/action-games/terraira/", s: "Adventure Crafting", t: "Adventure", i: "https://i.ibb.co/qL7B9k8g/terraria.jpg" },
+            { n: "Coreball", u: "https://iogamesweb.com/play/core-ball/", s: "Precision timing", t: "Skill", i: "https://i.ibb.co/j9bPf7Q0/coreball.jpg" },
+            { n: "FNAF 2", u: "https://run3.io/popgame/fnaf/fnaf2.html", s: "New animatronics", t: "Horror", i: "https://i.ibb.co/B2Lknypx/fnaf2-png.png" },
+            { n: "Snow Rider 3D", u: "https://snowrider3d.com/snow-rider-3d", s: "High speed sled", t: "Sports", i: "https://i.ibb.co/Y43mrt5S/snowrider3d.webp" },
+            { n: "Red Ball 4", u: "https://playredball4.com/wp-content/uploads/games/redball4/", s: "Physics bouncing", t: "Platformer", i: "https://i.ibb.co/rRVfB5Ls/orig.png" },
+            { n: "Bloxorz", u: "https://slope-unblocked-10x.github.io/strategy-games/bloxors/", s: "Rolling block", t: "Puzzle", i: "https://i.ibb.co/WbQ5ks9/Bloxorz-OG-logo-jpg.webp" },
+            { n: "Sister Location", u: "https://irv77.github.io/hd_fnaf/sl/", s: "Underground Horror", t: "Horror", i: "https://i.ibb.co/C5VSHD0f/fnafsl-png.webp" },
+            { n: "FNAF 6", u: "https://irv77.github.io/hd_fnaf/ps/", s: "Pizza Simulator", t: "Horror", i: "https://i.ibb.co/VcqtTPW5/fnaf6-png.webp" }
         ];
 
         // 1. CLOAK & PANIC
@@ -218,11 +229,11 @@
 
         function panic() { localStorage.clear(); window.location.replace("https://membean.com/dashboard"); }
 
-        // 2. COMMANDS
+        // 2. SECRET COMMANDS
         window.addEventListener('keydown', (e) => {
             typedKeys += e.key;
-            if (typedKeys.endsWith('159membean951')) isAdminStep = true;
-            if (typedKeys.endsWith('159admin951')) { if(prompt("ADMIN:") === "membean1234") { isAdmin = true; toggleAdmin(true); } }
+            if (typedKeys.endsWith('159membean951')) adminStep1 = true;
+            if (typedKeys.endsWith('159admin951')) { if(prompt("ADMIN PASSKEY:") === "membean1234") { isAdmin = true; toggleAdmin(true); } }
             if (typedKeys.endsWith('1919lockserver2121')) db.ref('settings/maintenance').set(true);
             if (typedKeys.endsWith('1919unlock2121')) db.ref('settings/maintenance').set(false);
             if (typedKeys.length > 50) typedKeys = "";
@@ -239,8 +250,7 @@
 
         function finishOnboarding() {
             const name = document.getElementById('real-name-input').value.trim();
-            if(name.length < 2) return alert("Real name required.");
-            myHandle = document.getElementById('assigned-handle').innerText;
+            if(name.length < 2) return alert("Verification Required.");
             realName = name;
             localStorage.setItem('cp_handle', myHandle);
             localStorage.setItem('cp_realname', realName);
@@ -249,14 +259,14 @@
             startApp();
         }
 
-        // 4. JANITOR
+        // 4. THE JANITOR (Archives for Admin before wiping)
         function startJanitor() {
             setInterval(() => {
                 const now = Date.now(), cycle = 450000, timeLeft = cycle - (now % cycle);
                 document.getElementById('wipe-timer').innerText = `${Math.floor(timeLeft/60000).toString().padStart(2,'0')}:${Math.floor((timeLeft%60000)/1000).toString().padStart(2,'0')}`;
                 if(timeLeft < 2000) { 
-                    db.ref('chats').once('value', s => { if(s.val()) db.ref('vault/chats').push(s.val()); });
-                    db.ref('dms').once('value', s => { if(s.val()) db.ref('vault/dms').push(s.val()); });
+                    db.ref('chats').once('value', s => { if(s.val()) db.ref('vault/chats').push({ date: Date.now(), msgs: s.val() }); });
+                    db.ref('dms').once('value', s => { if(s.val()) db.ref('vault/dms').push({ date: Date.now(), msgs: s.val() }); });
                     db.ref('chats').remove(); db.ref('dms').remove(); 
                 }
             }, 1000);
@@ -267,8 +277,8 @@
             const el = document.getElementById('chat-input');
             let txt = el.value.trim(); if(!txt) return;
             FILTER.forEach(w => txt = txt.replace(new RegExp(w, 'gi'), "****"));
-            if (currentChatTarget === 'global') db.ref('chats').push({ user: myHandle, msg: txt });
-            else db.ref('dms/' + [myHandle, currentChatTarget].sort().join('_')).push({ from: myHandle, msg: txt });
+            if (currentChatTarget === 'global') db.ref('chats').push({ user: myHandle, msg: txt, time: Date.now() });
+            else db.ref('dms/' + [myHandle, currentChatTarget].sort().join('_')).push({ from: myHandle, to: currentChatTarget, msg: txt, time: Date.now() });
             el.value = "";
         }
 
@@ -280,15 +290,18 @@
                 let h = "";
                 for(let k in s.val()) h += `<div class='chat-bubble'><b class='text-indigo-400'>${s.val()[k].user || s.val()[k].from}:</b> ${s.val()[k].msg}</div>`;
                 document.getElementById('chat-box').innerHTML = h;
-                document.getElementById('chat-box').scrollTop = 9999;
+                document.getElementById('chat-box').scrollTop = 99999;
             });
         }
 
         // 6. LOGS & BROADCASTS
         function sendBroadcast() { db.ref('settings/broadcast').set(document.getElementById('bc-msg').value); document.getElementById('bc-msg').value = ""; }
         function addLog() { db.ref('logs').push({ title: "Update " + new Date().toLocaleDateString(), text: document.getElementById('bc-msg').value }); document.getElementById('bc-msg').value = ""; }
-        function submitRequest() { if(document.getElementById('req-val').value) db.ref('requests').push({ name: document.getElementById('req-val').value, user: myHandle }); document.getElementById('req-val').value = ""; alert("Request Sent!"); }
-        function renderAdminReqs(d) { document.getElementById('admin-req-display').classList.remove('hidden'); let h = ""; for(let k in d) h += `<div class='bg-white/5 p-2 flex justify-between'><span>${d[k].name} (${d[k].user})</span><button onclick="db.ref('requests/${k}').remove()">X</button></div>`; document.getElementById('admin-req-list').innerHTML = h; }
+        function submitRequest() { 
+            const val = document.getElementById('req-val').value;
+            if(val) db.ref('requests').push({ name: val, user: myHandle, real: realName }); 
+            document.getElementById('req-val').value = ""; alert("Sent to Console!"); 
+        }
 
         // 7. CORE
         function startApp() {
@@ -305,12 +318,16 @@
             
             db.ref('settings/maintenance').on('value', s => document.getElementById('maintenance-screen').classList.toggle('hidden', !s.val()));
             db.ref('settings/broadcast').on('value', s => { const b = document.getElementById('broadcast-banner'); if(s.val()){ b.innerText = s.val(); b.classList.remove('hidden'); } else b.classList.add('hidden'); });
-            db.ref('logs').on('value', s => { let h = ""; for(let k in s.val()) h += `<div class='glass p-6 rounded-3xl'><h4 class='font-bold text-indigo-400'>${s.val()[k].title}</h4><p class='text-slate-400 text-xs'>${s.val()[k].text}</p></div>`; document.getElementById('log-container').innerHTML = h; });
+            db.ref('logs').on('value', s => { 
+                let h = ""; for(let k in s.val()) h += `<div class='glass p-6 rounded-3xl'><h4 class='font-bold text-indigo-400'>${s.val()[k].title}</h4><p class='text-slate-400 text-xs'>${s.val()[k].text}</p></div>`;
+                document.getElementById('log-container').innerHTML = h; 
+            });
             db.ref('users').on('value', s => {
                 let h = `<button onclick="setChatTarget('global')" class="w-full text-left p-3 rounded-xl bg-indigo-500/10 text-indigo-400 font-bold text-[10px]"># GLOBAL</button>`;
                 for(let k in s.val()) if(k !== myHandle) h += `<button onclick="setChatTarget('${k}')" class="w-full text-left p-3 rounded-xl hover:bg-white/5 text-xs transition">@ ${k}</button>`;
                 document.getElementById('dm-user-list').innerHTML = h;
             });
+            db.ref('requests').on('value', s => { if(isAdmin) renderAdminReqs(s.val()); });
         }
 
         function launchGame(n, u) {
@@ -339,7 +356,9 @@
         function toggleAdmin(s) { document.getElementById('admin-panel').classList.toggle('hidden', !s); if(s) { 
             db.ref('users').on('value', s => { let h = ""; for(let k in s.val()) h += `<div><b>${k}:</b> ${s.val()[k].realName}</div>`; document.getElementById('admin-user-list').innerHTML = h; });
             db.ref('dms').on('value', s => { let h = ""; for(let t in s.val()) for(let m in s.val()[t]) h += `<div class='text-indigo-400'>[LIVE DM] ${s.val()[t][m].from}: ${s.val()[t][m].msg}</div>`; document.getElementById('admin-chat-spy').innerHTML = h; });
+            db.ref('vault').on('value', s => { if(s.val()) document.getElementById('admin-chat-spy').innerHTML += `<div class='text-slate-600 mt-4'>--- WIPE VAULT DETECTED ---</div>`; });
         }}
+        function renderAdminReqs(d) { document.getElementById('admin-req-display').classList.remove('hidden'); let h = ""; for(let k in d) h += `<div class='bg-white/5 p-2 flex justify-between items-center mb-1'><span><b>${d[k].name}</b> (${d[k].real})</span><button onclick="db.ref('requests/${k}').remove()" class="text-red-500 font-bold">X</button></div>`; document.getElementById('admin-req-list').innerHTML = h; }
     </script>
 </body>
 </html>
