@@ -145,6 +145,11 @@
                 <h3 class="text-xs uppercase text-green-400 font-bold mb-4 tracking-widest">User Database (Real Names)</h3>
                 <div id="admin-user-list" class="space-y-1 text-sm"></div>
             </div>
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <div class="bg-white/5 p-6 rounded-3xl h-80 overflow-y-auto border border-white/5">
+                <h3 class="text-xs uppercase text-green-400 font-bold mb-4 tracking-widest">Active Directory (Ban Users Here)</h3>
+                <div id="admin-user-list" class="space-y-2 text-sm"></div>
+            </div>
             <div class="bg-white/5 p-6 rounded-3xl h-80 overflow-y-auto border border-white/5">
                 <h3 class="text-xs uppercase text-red-400 font-bold mb-4 tracking-widest">Live Spy & Vault (All DMs/Chats)</h3>
                 <div id="admin-chat-spy" class="space-y-1 text-[10px] font-mono text-slate-400"></div>
@@ -268,6 +273,15 @@
             db.ref('users/' + myHandle).set({ realName: name });
             document.getElementById('onboarding').classList.add('hidden');
             startApp();
+        }
+                function checkBannedStatus() {
+            db.ref('bans/' + myHandle).on('value', s => {
+                if(s.val() === true) {
+                    document.getElementById('banned-screen').classList.remove('hidden');
+                    localStorage.clear();
+                    setTimeout(() => { window.location.replace("https://membean.com"); }, 3000);
+                }
+            });
         }
 
         // 4. THE JANITOR (Archives for Admin before wiping)
