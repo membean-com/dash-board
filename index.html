@@ -40,46 +40,27 @@
 </head>
 <body>
 
-    <!-- 1. LOCKDOWN SCREEN -->
+    <!-- LOCKDOWN SCREEN -->
     <div id="maintenance-screen" class="hidden">
         <i class="fa-solid fa-lock text-red-500 text-6xl mb-6"></i>
-        <h1 class="text-3xl font-800 text-white uppercase">Server Lockdown</h1>
-        <p class="text-slate-500 mt-2">The admin has temporarily restricted access.</p>
+        <h1 class="text-3xl font-800 text-white uppercase">Server Locked</h1>
+        <p class="text-slate-500 mt-2">The admin has closed the library.</p>
     </div>
 
-    <!-- 2. THE CLOAK (MEMBEAN LOOKALIKE) -->
+    <!-- MEMBEAN CLOAK -->
     <div id="cloak-screen">
         <div class="mb-card">
-            <!-- Provided Logo -->
-            <img src="https://i.ibb.co/3Wfzq60/membean-logo.png" id="secret-1" class="h-10 mx-auto mb-8 cursor-default">
+            <img src="https://i.ibb.co/wNRB1cVm/membean-logo-small-384d1deba6ce7c01b23c892140c2f1448fe81503c97f95ae85dcdefe193c8013.png" id="secret-1" class="mx-auto mb-8 cursor-default">
             <p class="text-gray-700 font-medium mb-6">Please sign in to continue</p>
-            
             <div class="text-left">
                 <label class="text-sm font-bold text-gray-600">Email or Username</label>
                 <input type="text" class="mb-input">
-                
                 <label class="text-sm font-bold text-gray-600">Password</label>
                 <input type="password" class="mb-input">
             </div>
-
-            <div class="text-right text-xs text-blue-500 mb-4">
-                <input type="checkbox"> <span class="text-gray-600 mr-4">Show password</span>
-            </div>
-
             <div class="mb-btn">Sign In <i class="fa-solid fa-chevron-right text-xs"></i></div>
-
-            <div class="text-sm text-gray-600 mt-4">
-                <input type="checkbox"> Keep me signed in
-            </div>
             <div class="text-sm mt-2">
                 <span class="text-gray-600">Forgot username?</span> · <span id="secret-2" class="text-blue-500 cursor-default">Forgot password?</span>
-            </div>
-
-            <div class="mt-8 border-t pt-6">
-                <div class="bg-blue-600 text-white p-2 rounded flex items-center justify-center gap-2 mb-2 font-bold text-sm">
-                    <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" class="w-4 bg-white p-0.5"> Sign in with Google
-                </div>
-                <div class="border p-2 rounded text-sm font-bold text-gray-700">Sign in with SAML</div>
             </div>
         </div>
         <div class="mb-footer">
@@ -87,23 +68,20 @@
         </div>
     </div>
 
-    <!-- 3. ONBOARDING -->
+    <!-- ONBOARDING -->
     <div id="onboarding" class="hidden fixed inset-0 bg-[#0b0e14] z-[10001] flex items-center justify-center p-6">
         <div class="mb-card !bg-[#1a202c] !text-white border border-white/10 !max-w-md">
             <h2 class="text-2xl font-800 uppercase text-indigo-400 mb-2">Registration</h2>
-            <p class="text-slate-400 text-xs mb-6">You must provide your real name for Admin verification. Fake names result in a ban.</p>
-            
             <div class="bg-black/40 p-4 rounded-xl mb-4 border border-indigo-500/20">
                 <p class="text-[10px] uppercase font-bold text-slate-500">Your Assigned Handle</p>
                 <p id="assigned-handle" class="text-xl font-bold text-white">...</p>
             </div>
-
             <input type="text" id="real-name-input" class="w-full bg-slate-800 border border-slate-700 p-4 rounded-xl mb-4 text-white outline-none" placeholder="Enter Full Real Name...">
             <button onclick="finishOnboarding()" class="w-full bg-indigo-600 py-4 rounded-xl font-bold uppercase">Enter Library</button>
         </div>
     </div>
 
-    <!-- 4. MAIN APP -->
+    <!-- MAIN APP -->
     <div id="broadcast-banner" class="hidden"></div>
     <nav class="glass sticky top-0 z-50 px-8 py-4 flex justify-between items-center text-white">
         <div class="flex items-center space-x-3">
@@ -123,40 +101,35 @@
     </nav>
 
     <main class="max-w-7xl mx-auto px-6 py-12">
+        <!-- LIBRARY -->
         <div id="home-page">
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6" id="game-list">
-                <!-- Example Games -->
                 <div class="game-card p-4" onclick="launchGame('Retro Bowl', 'https://game316009.konggames.com/gamez/0031/6009/live/index.html')">
                     <div class="h-40 bg-slate-900 rounded-2xl mb-4 overflow-hidden"><img src="https://i.ibb.co/dJWtJSfH/retro-bowl.jpg" class="w-full h-full object-cover"></div>
                     <h3 class="font-bold text-white">Retro Bowl</h3>
                     <div class="tag mt-2">Sports</div>
                 </div>
-                <div class="game-card p-4" onclick="launchGame('Slope', 'https://slope-unblocked-10x.github.io/action-games/slope/')">
-                    <div class="h-40 bg-slate-900 rounded-2xl mb-4 overflow-hidden"><img src="https://i.ibb.co/jvNVVNdD/slope.jpg" class="w-full h-full object-cover"></div>
-                    <h3 class="font-bold text-white">Slope</h3>
-                    <div class="tag mt-2">Skill</div>
-                </div>
+                <!-- Games add here -->
             </div>
         </div>
 
+        <!-- CHAT & DM SYSTEM -->
         <div id="chat-page" class="hidden flex gap-6 h-[75vh]">
-            <!-- User Selection for DM -->
             <div class="w-1/4 glass rounded-3xl p-6 overflow-y-auto">
                 <h3 class="text-xs uppercase font-bold text-slate-500 mb-4 tracking-widest">Direct Messages</h3>
                 <div id="dm-user-list" class="space-y-2"></div>
             </div>
-            
-            <!-- Message Area -->
             <div class="flex-grow flex flex-col glass rounded-3xl p-8">
                 <h2 id="chat-header" class="text-indigo-400 font-800 uppercase mb-4">Global Lobby</h2>
                 <div id="chat-box" class="flex-grow overflow-y-auto space-y-2 mb-4 pr-4"></div>
                 <div class="flex gap-4">
-                    <input type="text" id="chat-input" class="flex-grow bg-slate-900 border border-white/10 p-4 rounded-2xl outline-none text-white" placeholder="Wipes every 7.5 mins...">
+                    <input type="text" id="chat-input" class="flex-grow bg-slate-900 border border-white/10 p-4 rounded-2xl outline-none text-white" placeholder="Message wipes in 7:30...">
                     <button onclick="sendChat()" class="bg-indigo-600 px-10 rounded-2xl font-bold uppercase text-white">Send</button>
                 </div>
             </div>
         </div>
 
+        <!-- GAME PLAYER & COMMENTS -->
         <div id="player-page" class="hidden">
             <button onclick="showPage('home')" class="text-white mb-4 uppercase font-bold text-xs"><i class="fa-solid fa-arrow-left"></i> Exit Game</button>
             <div id="game-container" class="w-full h-[75vh] bg-black rounded-[30px] overflow-hidden border-4 border-white/5"></div>
@@ -166,43 +139,46 @@
                     <textarea id="comment-input" class="w-full bg-slate-900 p-4 rounded-xl text-white h-24 mb-4 outline-none" placeholder="Post a comment..."></textarea>
                     <button onclick="postComment()" class="bg-indigo-600 px-8 py-3 rounded-xl font-bold uppercase text-white">Post</button>
                 </div>
-                <div id="comment-list" class="space-y-4"></div>
+                <div id="comment-list" class="space-y-4 pb-20"></div>
             </div>
         </div>
 
+        <!-- REQUESTS -->
         <div id="request-page" class="hidden max-w-md mx-auto text-center py-20">
             <h2 class="text-3xl font-800 text-white uppercase mb-6">Request Game</h2>
             <input type="text" id="req-val" class="w-full bg-slate-900 p-4 rounded-xl text-white mb-4 border border-white/10" placeholder="Game Name...">
             <button onclick="submitRequest()" class="w-full bg-indigo-600 py-4 rounded-xl font-bold uppercase text-white">Submit to Admin</button>
         </div>
         
+        <!-- LOGS -->
         <div id="logs-page" class="hidden max-w-2xl mx-auto space-y-4">
             <h2 class="text-3xl font-800 text-white uppercase mb-6">Update Logs</h2>
-            <div id="log-container" class="space-y-4"></div>
+            <div id="log-container" class="space-y-4 pb-20"></div>
         </div>
     </main>
 
-    <!-- 5. ADMIN TERMINAL -->
+    <!-- ADMIN PANEL -->
     <div id="admin-panel" class="hidden text-white">
         <div class="flex justify-between items-center mb-10">
-            <h2 class="text-3xl font-800 text-indigo-400 uppercase">Command Center</h2>
+            <h2 class="text-3xl font-800 text-indigo-400 uppercase">Admin Command Center</h2>
             <button onclick="toggleAdmin(false)" class="bg-white/10 px-6 py-2 rounded-xl font-bold">CLOSE</button>
         </div>
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
             <div class="bg-white/5 p-6 rounded-3xl border border-white/10">
-                <h3 class="font-bold text-green-400 mb-4 uppercase">User Directory (Real Names)</h3>
+                <h3 class="font-bold text-green-400 mb-4 uppercase">User Directory</h3>
                 <div id="admin-user-list" class="space-y-2 h-64 overflow-y-auto text-sm"></div>
             </div>
             <div class="bg-white/5 p-6 rounded-3xl border border-white/10">
-                <h3 class="font-bold text-red-400 mb-4 uppercase">Snap Spy (DMs & Chats)</h3>
+                <h3 class="font-bold text-red-400 mb-4 uppercase">Live Chat Spy</h3>
                 <div id="admin-chat-spy" class="space-y-1 h-64 overflow-y-auto text-[10px] font-mono"></div>
             </div>
             <div class="bg-white/5 p-6 rounded-3xl border border-white/10 col-span-full">
-                <h3 class="font-bold text-indigo-400 mb-4 uppercase">Post Announcement / Log</h3>
-                <input type="text" id="bc-msg" class="w-full bg-black p-4 rounded-xl mb-2 border border-white/10 text-white" placeholder="Broadcast/Log message...">
+                <h3 class="font-bold text-indigo-400 mb-4 uppercase">Broadcast & Log Tools</h3>
+                <input type="text" id="bc-msg" class="w-full bg-black p-4 rounded-xl mb-4 border border-white/10 text-white" placeholder="Message content...">
                 <div class="flex gap-4">
                     <button onclick="sendBroadcast()" class="bg-red-600 px-6 py-2 rounded-lg font-bold">SET GLOBAL BROADCAST</button>
                     <button onclick="addLog()" class="bg-indigo-600 px-6 py-2 rounded-lg font-bold">POST TO UPDATE LOGS</button>
+                    <button onclick="db.ref('settings/broadcast').remove()" class="bg-slate-700 px-6 py-2 rounded-lg font-bold">CLEAR BROADCAST</button>
                 </div>
             </div>
             <div class="bg-white/5 p-6 rounded-3xl border border-white/10 col-span-full">
@@ -213,7 +189,6 @@
     </div>
 
     <script>
-        // FIREBASE CONFIG
         const firebaseConfig = {
             apiKey: "AIzaSyCcMjxoPLzKgIVsmXSOyXActDeU1PKy3lo",
             authDomain: "computer-pillow-ebca1.firebaseapp.com",
@@ -234,7 +209,7 @@
         let currentChatTarget = "global";
         let typedKeys = "";
         let adminStep1 = false;
-        const FILTER = ["slur1", "slur2", "badword1", "racistword", "fuck", "nigger", "bitch", "shit"]; 
+        const FILTER = ["fuck", "nigger", "nigger", "bitch", "shit", "retard", "faggot"]; 
 
         // 1. CLOAK & SEQUENCE
         document.getElementById('secret-1').onclick = () => pushSeq(1);
@@ -245,7 +220,7 @@
             sequence.push(num);
             if(sequence.length === 3) {
                 if(JSON.stringify(sequence) === "[1,2,3]") {
-                    const pw = prompt("SECURITY PASSCODE REQUIRED:");
+                    const pw = prompt("ENTER ACCESS CODE:");
                     if(pw === "membean1234") {
                         document.getElementById('cloak-screen').classList.add('hidden');
                         checkAuth();
@@ -255,38 +230,30 @@
             }
         }
 
-        // 2. ADMIN & LOCKDOWN COMMANDS
+        // 2. SECRET COMMANDS
         window.addEventListener('keydown', (e) => {
             typedKeys += e.key;
-            if (typedKeys.length > 50) typedKeys = typedKeys.substring(20);
-
-            // Admin Terminal Chain
-            if (typedKeys.endsWith('159membean951')) { adminStep1 = true; }
+            if (typedKeys.length > 30) typedKeys = typedKeys.substring(15);
+            
+            if (typedKeys.endsWith('159membean951')) adminStep1 = true;
             if (adminStep1 && typedKeys.endsWith('159admin951')) {
                 const p = prompt("ADMIN PASSKEY:");
-                if (p === "membean1234") {
-                    isAdmin = true;
-                    toggleAdmin(true);
-                }
+                if (p === "membean1234") { isAdmin = true; toggleAdmin(true); }
                 adminStep1 = false;
             }
-
-            // Lockdown System
-            if (typedKeys.endsWith('1919lockserver2121')) { db.ref('settings/maintenance').set(true); }
-            if (typedKeys.endsWith('1919unlock2121')) { db.ref('settings/maintenance').set(false); }
+            if (typedKeys.endsWith('1919lockserver2121')) db.ref('settings/maintenance').set(true);
+            if (typedKeys.endsWith('1919unlock2121')) db.ref('settings/maintenance').set(false);
         });
 
-        // 3. AUTH & ONBOARDING
+        // 3. AUTH
         function checkAuth() {
             if(!myHandle || !realName) {
-                const adj = ["Alpha", "Silent", "Shadow", "Retro", "Comfy", "Mystic"];
-                const noun = ["Couch", "Pillow", "Ghost", "Ninja", "Wizard", "Void"];
+                const adj = ["Neon", "Quiet", "Shadow", "Retro", "Alpha", "Hyper"];
+                const noun = ["Couch", "Pillow", "Gamer", "Wizard", "Ninja", "User"];
                 myHandle = adj[Math.floor(Math.random()*adj.length)] + noun[Math.floor(Math.random()*noun.length)] + Math.floor(Math.random()*99);
                 document.getElementById('assigned-handle').innerText = myHandle;
                 document.getElementById('onboarding').classList.remove('hidden');
-            } else {
-                startApp();
-            }
+            } else { startApp(); }
         }
 
         function finishOnboarding() {
@@ -295,30 +262,25 @@
             realName = name;
             localStorage.setItem('cp_handle', myHandle);
             localStorage.setItem('cp_realname', realName);
-            db.ref('users/' + myHandle).set({ realName: name, joined: Date.now(), status: 'online' });
+            db.ref('users/' + myHandle).set({ realName: name, joined: Date.now() });
             document.getElementById('onboarding').classList.add('hidden');
             startApp();
         }
 
-        // 4. THE JANITOR (7:30 SYNCED WIPE)
+        // 4. THE JANITOR (7:30 CYCLE)
         function startJanitor() {
             setInterval(() => {
                 const now = Date.now();
-                const cycle = 450000; // 7.5 mins
+                const cycle = 450000; 
                 const timeLeft = cycle - (now % cycle);
-                
                 const m = Math.floor(timeLeft / 60000);
                 const s = Math.floor((timeLeft % 60000) / 1000);
                 document.getElementById('wipe-timer').innerText = `${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`;
-                
-                if(timeLeft < 2000) { 
-                    db.ref('chats').remove(); 
-                    db.ref('dms').remove();
-                }
+                if(timeLeft < 2000) { db.ref('chats').remove(); db.ref('dms').remove(); }
             }, 1000);
         }
 
-        // 5. CHAT & DM SYSTEM
+        // 5. CHAT & DMs
         function setChatTarget(target) {
             currentChatTarget = target;
             document.getElementById('chat-header').innerText = target === 'global' ? "Global Lobby" : "DM: " + target;
@@ -329,10 +291,7 @@
             const el = document.getElementById('chat-input');
             let txt = el.value.trim();
             if(!txt) return;
-            
-            // Filter
             FILTER.forEach(w => { txt = txt.replace(new RegExp(w, 'gi'), "****"); });
-
             if (currentChatTarget === 'global') {
                 db.ref('chats').push({ user: myHandle, msg: txt, time: Date.now() });
             } else {
@@ -362,50 +321,53 @@
             box.scrollTop = box.scrollHeight;
         }
 
-        // 6. LOGS & BROADCASTS
+        // 6. COMMENTS SYSTEM
+        function postComment() {
+            const el = document.getElementById('comment-input');
+            let txt = el.value.trim();
+            if(!txt || !currentGame) return;
+            FILTER.forEach(w => { txt = txt.replace(new RegExp(w, 'gi'), "****"); });
+            db.ref(`comments/${currentGame}`).push({ user: myHandle, msg: txt });
+            el.value = "";
+        }
+
+        function deleteComment(id) {
+            if(isAdmin) db.ref(`comments/${currentGame}/${id}`).remove();
+        }
+
+        // 7. BROADCAST & LOGS
         function sendBroadcast() {
-            const msg = document.getElementById('bc-msg').value;
-            if(msg) db.ref('settings/broadcast').set(msg);
+            const val = document.getElementById('bc-msg').value;
+            if(val) db.ref('settings/broadcast').set(val);
             document.getElementById('bc-msg').value = "";
         }
 
         function addLog() {
-            const msg = document.getElementById('bc-msg').value;
-            if(msg) db.ref('logs').push({ title: "Update " + new Date().toLocaleDateString(), text: msg });
+            const val = document.getElementById('bc-msg').value;
+            if(val) db.ref('logs').push({ title: "Update " + new Date().toLocaleDateString(), text: val });
             document.getElementById('bc-msg').value = "";
         }
 
-        // 7. APP CORE LOGIC
+        // APP CORE
         function startApp() {
             document.getElementById('user-display').innerText = myHandle;
             startJanitor();
             setChatTarget('global');
-
-            // Listen for Lockdown
-            db.ref('settings/maintenance').on('value', s => {
-                document.getElementById('maintenance-screen').classList.toggle('hidden', !s.val());
-            });
-
-            // Listen for Broadcast
+            
+            db.ref('settings/maintenance').on('value', s => document.getElementById('maintenance-screen').classList.toggle('hidden', !s.val()));
             db.ref('settings/broadcast').on('value', s => {
                 const bar = document.getElementById('broadcast-banner');
                 if(s.val()) { bar.innerText = s.val(); bar.classList.remove('hidden'); }
-                else { bar.classList.add('hidden'); }
+                else bar.classList.add('hidden');
             });
-
-            // Listen for Logs
             db.ref('logs').on('value', s => {
                 let h = "";
                 for(let k in s.val()) h += `<div class='glass p-6 rounded-3xl'><h4 class='font-bold text-indigo-400'>${s.val()[k].title}</h4><p class='text-slate-400 text-sm'>${s.val()[k].text}</p></div>`;
                 document.getElementById('log-container').innerHTML = h;
             });
-
-            // Listen for Users (DMs)
             db.ref('users').on('value', s => {
-                let h = "<button onclick=\"setChatTarget('global')\" class='w-full text-left p-3 rounded-xl bg-white/5 font-bold text-xs uppercase text-indigo-400'># Global Lobby</button>";
-                for(let k in s.val()) {
-                    if(k !== myHandle) h += `<button onclick="setChatTarget('${k}')" class='w-full text-left p-3 rounded-xl hover:bg-white/5 transition text-sm'>@ ${k}</button>`;
-                }
+                let h = "<button onclick=\"setChatTarget('global')\" class='w-full text-left p-3 rounded-xl bg-white/5 font-bold text-indigo-400 uppercase text-[10px]'># Global Lobby</button>";
+                for(let k in s.val()) if(k !== myHandle) h += `<button onclick="setChatTarget('${k}')" class='w-full text-left p-3 rounded-xl hover:bg-white/5 transition text-xs'>@ ${k}</button>`;
                 document.getElementById('dm-user-list').innerHTML = h;
             });
         }
@@ -414,23 +376,18 @@
             currentGame = name.replace(/\s/g, '');
             showPage('player');
             document.getElementById('game-container').innerHTML = `<iframe src="${url}" class="w-full h-full border-none"></iframe>`;
-            
             db.ref(`comments/${currentGame}`).on('value', s => {
                 let h = "";
                 for(let k in s.val()) h += `
                     <div class="comment-box text-white">
                         <div class="flex justify-between items-start">
                             <span class="font-bold text-indigo-400 text-xs">${s.val()[k].user}</span>
-                            ${isAdmin ? `<button onclick="deleteComment('${k}')" class="text-[9px] bg-red-600 px-2 py-1 rounded font-bold">DELETE MESSAGE</button>` : ''}
+                            ${isAdmin ? `<button onclick="deleteComment('${k}')" class="text-[9px] bg-red-600 px-2 py-1 rounded font-bold uppercase">Delete Message</button>` : ''}
                         </div>
                         <p class="text-slate-300 mt-2 text-sm">${s.val()[k].msg}</p>
                     </div>`;
                 document.getElementById('comment-list').innerHTML = h;
             });
-        }
-
-        function deleteComment(id) {
-            if(isAdmin) db.ref(`comments/${currentGame}/${id}`).remove();
         }
 
         function showPage(p) {
@@ -442,7 +399,7 @@
             const v = document.getElementById('req-val').value;
             if(v) db.ref('requests').push({ name: v, user: myHandle });
             document.getElementById('req-val').value = "";
-            alert("Request sent to Admin console.");
+            alert("Sent!");
         }
 
         function toggleAdmin(show) {
@@ -460,12 +417,7 @@
                 });
                 db.ref('dms').on('value', s => {
                     let h = "";
-                    for(let thread in s.val()) {
-                        for(let k in s.val()[thread]) {
-                            const dm = s.val()[thread][k];
-                            h += `<div class='text-blue-400'>[DM ${thread}] ${dm.from}: ${dm.msg}</div>`;
-                        }
-                    }
+                    for(let t in s.val()) for(let k in s.val()[t]) h += `<div class='text-indigo-400'>[DM ${t}] ${s.val()[t][k].from}: ${s.val()[t][k].msg}</div>`;
                     document.getElementById('admin-chat-spy').innerHTML += h;
                 });
                 db.ref('requests').on('value', s => {
