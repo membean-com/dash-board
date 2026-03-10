@@ -17,34 +17,37 @@
         /* MEMBEAN CLOAK STYLES */
         #cloak-screen { font-family: 'Inter', sans-serif; background-color: #313b44; position: fixed; inset: 0; z-index: 10000; display: flex; flex-direction: column; align-items: center; justify-content: center; }
         .mb-card { background: white; width: 100%; max-width: 440px; border-radius: 4px; padding: 40px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); text-align: center; }
-        .mb-input { width: 100%; border: 1px solid #ccc; padding: 12px; border-radius: 4px; margin-top: 8px; margin-bottom: 20px; }
+        .mb-input { width: 100%; border: 1px solid #ccc; padding: 12px; border-radius: 4px; margin-top: 8px; margin-bottom: 20px; color: black; }
         .mb-btn { background: #8bc3eb; color: white; width: 160px; padding: 12px; border-radius: 25px; font-weight: bold; margin: 20px auto; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 10px; }
-        .mb-footer { position: fixed; bottom: 10px; color: #999; font-size: 12px; display: flex; gap: 15px; }
         
         /* APP STYLES */
         body { font-family: 'Outfit', sans-serif; background-color: #0b0e14; color: #e2e8f0; margin:0; overflow-x: hidden; }
         .glass { background: rgba(23, 28, 41, 0.8); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(255,255,255,0.05); }
-        .game-card { background: #1a202c; border-radius: 30px; transition: all 0.3s ease; overflow: hidden; border: 1px solid rgba(255,255,255,0.03); cursor: pointer; }
-        .game-card:hover { transform: translateY(-5px); border-color: #6366f1; }
-        .hidden { display: none !important; }
-        .tag { font-size: 9px; padding: 2px 8px; border-radius: 10px; background: rgba(99, 102, 241, 0.1); color: #a5b4fc; font-weight: bold; text-transform: uppercase; }
+        .game-card { background: #1a202c; border-radius: 25px; transition: all 0.3s ease; overflow: hidden; border: 1px solid rgba(255,255,255,0.03); cursor: pointer; display: flex; flex-direction: column; height: 100%; }
+        .game-card:hover { transform: translateY(-5px); border-color: #6366f1; box-shadow: 0 10px 20px -10px rgba(99, 102, 241, 0.5); }
+        .tag { font-size: 8px; padding: 2px 6px; border-radius: 6px; background: rgba(99, 102, 241, 0.1); color: #a5b4fc; font-weight: bold; text-transform: uppercase; }
         
-        #admin-panel { position: fixed; inset: 0; background: #020617; z-index: 9000; padding: 40px; overflow-y: auto; }
-        #maintenance-screen { position: fixed; inset: 0; background: #0b0e14; z-index: 11000; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
-        #broadcast-banner { background: #ef4444; color: white; text-align: center; padding: 10px; font-weight: 800; font-size: 12px; text-transform: uppercase; letter-spacing: 1px; }
+        /* PANIC BUTTON */
+        #panic-btn { position: fixed; bottom: 20px; right: 20px; z-index: 15000; background: #ef4444; color: white; width: 55px; height: 55px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 20px rgba(239, 68, 68, 0.5); cursor: pointer; border: 2px solid white; transition: 0.2s; }
+        #panic-btn:hover { transform: scale(1.1); background: #dc2626; }
         
-        .wipe-timer { color: #ef4444; font-weight: 800; font-family: monospace; }
-        .comment-box { background: rgba(255,255,255,0.03); padding: 15px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.05); }
+        #admin-panel { position: fixed; inset: 0; background: #020617; z-index: 12000; padding: 40px; overflow-y: auto; }
+        #maintenance-screen { position: fixed; inset: 0; background: #0b0e14; z-index: 13000; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
         .chat-bubble { background: rgba(255,255,255,0.05); padding: 12px; border-radius: 15px; margin-bottom: 8px; border: 1px solid rgba(255,255,255,0.03); }
+        .comment-box { background: rgba(255,255,255,0.03); padding: 15px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.05); }
     </style>
 </head>
 <body>
 
+    <!-- PANIC BUTTON (Persistent) -->
+    <div id="panic-btn" onclick="panic()"><i class="fa-solid fa-shield-halved text-xl"></i></div>
+
     <!-- LOCKDOWN SCREEN -->
     <div id="maintenance-screen" class="hidden">
         <i class="fa-solid fa-lock text-red-500 text-6xl mb-6"></i>
-        <h1 class="text-3xl font-800 text-white uppercase">Server Locked</h1>
-        <p class="text-slate-500 mt-2">The admin has closed the library.</p>
+        <h1 class="text-3xl font-800 text-white uppercase">Server Lockdown</h1>
+        <p class="text-slate-500 mt-2">Access restricted by Administrator.</p>
+        <p class="text-slate-700 text-[10px] mt-8">Code: 403-Forbidden</p>
     </div>
 
     <!-- MEMBEAN CLOAK -->
@@ -54,135 +57,122 @@
             <p class="text-gray-700 font-medium mb-6">Please sign in to continue</p>
             <div class="text-left">
                 <label class="text-sm font-bold text-gray-600">Email or Username</label>
-                <input type="text" class="mb-input">
+                <input type="text" class="mb-input" placeholder="Enter text...">
                 <label class="text-sm font-bold text-gray-600">Password</label>
-                <input type="password" class="mb-input">
+                <input type="password" class="mb-input" placeholder="Password">
             </div>
             <div class="mb-btn">Sign In <i class="fa-solid fa-chevron-right text-xs"></i></div>
             <div class="text-sm mt-2">
                 <span class="text-gray-600">Forgot username?</span> · <span id="secret-2" class="text-blue-500 cursor-default">Forgot password?</span>
             </div>
         </div>
-        <div class="mb-footer">
+        <div class="fixed bottom-4 text-[11px] text-gray-400 flex gap-4">
             <span>Support</span> <span>Terms of Use</span> <span id="secret-3" class="cursor-default">Privacy Policy</span>
         </div>
     </div>
 
-    <!-- ONBOARDING -->
-    <div id="onboarding" class="hidden fixed inset-0 bg-[#0b0e14] z-[10001] flex items-center justify-center p-6">
+    <!-- REGISTRATION -->
+    <div id="onboarding" class="hidden fixed inset-0 bg-[#0b0e14] z-[11000] flex items-center justify-center p-6">
         <div class="mb-card !bg-[#1a202c] !text-white border border-white/10 !max-w-md">
-            <h2 class="text-2xl font-800 uppercase text-indigo-400 mb-2">Registration</h2>
+            <h2 class="text-2xl font-800 uppercase text-indigo-400 mb-2">Identify Yourself</h2>
+            <p class="text-slate-400 text-xs mb-6">Admins verify real names. Fake identities result in a permanent ban.</p>
             <div class="bg-black/40 p-4 rounded-xl mb-4 border border-indigo-500/20">
-                <p class="text-[10px] uppercase font-bold text-slate-500">Your Assigned Handle</p>
+                <p class="text-[10px] uppercase font-bold text-slate-500">Your Random Handle</p>
                 <p id="assigned-handle" class="text-xl font-bold text-white">...</p>
             </div>
-            <input type="text" id="real-name-input" class="w-full bg-slate-800 border border-slate-700 p-4 rounded-xl mb-4 text-white outline-none" placeholder="Enter Full Real Name...">
-            <button onclick="finishOnboarding()" class="w-full bg-indigo-600 py-4 rounded-xl font-bold uppercase">Enter Library</button>
+            <input type="text" id="real-name-input" class="w-full bg-slate-800 border border-slate-700 p-4 rounded-xl mb-4 text-white outline-none" placeholder="Full Real Name...">
+            <button onclick="finishOnboarding()" class="w-full bg-indigo-600 py-4 rounded-xl font-bold uppercase">Enter Website</button>
         </div>
     </div>
 
-    <!-- MAIN APP -->
-    <div id="broadcast-banner" class="hidden"></div>
-    <nav class="glass sticky top-0 z-50 px-8 py-4 flex justify-between items-center text-white">
-        <div class="flex items-center space-x-3">
-            <div class="bg-indigo-600 p-2 rounded-lg"><i class="fa-solid fa-couch"></i></div>
-            <span class="text-xl font-800 uppercase tracking-tighter">Computer <span class="text-indigo-400">Pillow</span></span>
-        </div>
-        <div class="flex items-center space-x-6 text-[11px] font-bold uppercase tracking-widest">
-            <div class="text-red-500 bg-red-500/10 px-3 py-1 rounded-full">
-                WIPE: <span id="wipe-timer" class="wipe-timer">07:30</span>
-            </div>
-            <button onclick="showPage('home')">Library</button>
-            <button onclick="showPage('chat')">Chat & DMs</button>
-            <button onclick="showPage('logs')">Logs</button>
-            <button onclick="showPage('request')">Request</button>
-            <span id="user-display" class="text-indigo-400 border-l border-white/10 pl-6"></span>
-        </div>
-    </nav>
-
-    <main class="max-w-7xl mx-auto px-6 py-12">
-        <!-- LIBRARY -->
-        <div id="home-page">
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6" id="game-list">
-                <div class="game-card p-4" onclick="launchGame('Retro Bowl', 'https://game316009.konggames.com/gamez/0031/6009/live/index.html')">
-                    <div class="h-40 bg-slate-900 rounded-2xl mb-4 overflow-hidden"><img src="https://i.ibb.co/dJWtJSfH/retro-bowl.jpg" class="w-full h-full object-cover"></div>
-                    <h3 class="font-bold text-white">Retro Bowl</h3>
-                    <div class="tag mt-2">Sports</div>
-                </div>
-                <!-- Games add here -->
-            </div>
-        </div>
-
-        <!-- CHAT & DM SYSTEM -->
-        <div id="chat-page" class="hidden flex gap-6 h-[75vh]">
-            <div class="w-1/4 glass rounded-3xl p-6 overflow-y-auto">
-                <h3 class="text-xs uppercase font-bold text-slate-500 mb-4 tracking-widest">Direct Messages</h3>
-                <div id="dm-user-list" class="space-y-2"></div>
-            </div>
-            <div class="flex-grow flex flex-col glass rounded-3xl p-8">
-                <h2 id="chat-header" class="text-indigo-400 font-800 uppercase mb-4">Global Lobby</h2>
-                <div id="chat-box" class="flex-grow overflow-y-auto space-y-2 mb-4 pr-4"></div>
-                <div class="flex gap-4">
-                    <input type="text" id="chat-input" class="flex-grow bg-slate-900 border border-white/10 p-4 rounded-2xl outline-none text-white" placeholder="Message wipes in 7:30...">
-                    <button onclick="sendChat()" class="bg-indigo-600 px-10 rounded-2xl font-bold uppercase text-white">Send</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- GAME PLAYER & COMMENTS -->
-        <div id="player-page" class="hidden">
-            <button onclick="showPage('home')" class="text-white mb-4 uppercase font-bold text-xs"><i class="fa-solid fa-arrow-left"></i> Exit Game</button>
-            <div id="game-container" class="w-full h-[75vh] bg-black rounded-[30px] overflow-hidden border-4 border-white/5"></div>
-            <div class="mt-10 max-w-3xl">
-                <h3 class="text-2xl font-800 text-white uppercase mb-6">Discussion</h3>
-                <div class="glass p-6 rounded-3xl mb-6">
-                    <textarea id="comment-input" class="w-full bg-slate-900 p-4 rounded-xl text-white h-24 mb-4 outline-none" placeholder="Post a comment..."></textarea>
-                    <button onclick="postComment()" class="bg-indigo-600 px-8 py-3 rounded-xl font-bold uppercase text-white">Post</button>
-                </div>
-                <div id="comment-list" class="space-y-4 pb-20"></div>
-            </div>
-        </div>
-
-        <!-- REQUESTS -->
-        <div id="request-page" class="hidden max-w-md mx-auto text-center py-20">
-            <h2 class="text-3xl font-800 text-white uppercase mb-6">Request Game</h2>
-            <input type="text" id="req-val" class="w-full bg-slate-900 p-4 rounded-xl text-white mb-4 border border-white/10" placeholder="Game Name...">
-            <button onclick="submitRequest()" class="w-full bg-indigo-600 py-4 rounded-xl font-bold uppercase text-white">Submit to Admin</button>
-        </div>
+    <!-- APP CONTENT -->
+    <div id="main-app" class="hidden">
+        <div id="broadcast-banner" class="hidden bg-red-600 text-white text-center p-2 text-[10px] font-bold uppercase tracking-widest"></div>
         
-        <!-- LOGS -->
-        <div id="logs-page" class="hidden max-w-2xl mx-auto space-y-4">
-            <h2 class="text-3xl font-800 text-white uppercase mb-6">Update Logs</h2>
-            <div id="log-container" class="space-y-4 pb-20"></div>
-        </div>
-    </main>
+        <nav class="glass sticky top-0 z-50 px-8 py-4 flex justify-between items-center text-white">
+            <div class="flex items-center space-x-3">
+                <div class="bg-indigo-600 p-2 rounded-lg"><i class="fa-solid fa-couch"></i></div>
+                <span class="text-xl font-800 uppercase tracking-tighter">Computer <span class="text-indigo-400">Pillow</span></span>
+            </div>
+            <div class="flex items-center space-x-6 text-[11px] font-bold uppercase tracking-widest">
+                <div class="text-red-500 bg-red-500/10 px-3 py-1 rounded-full">WIPE: <span id="wipe-timer" class="font-mono">07:30</span></div>
+                <button onclick="showPage('home')">Library</button>
+                <button onclick="showPage('chat')">Chat & DMs</button>
+                <button onclick="showPage('logs')">Logs</button>
+                <button onclick="showPage('request')">Request</button>
+                <span id="user-display" class="text-indigo-400 border-l border-white/10 pl-6"></span>
+            </div>
+        </nav>
 
-    <!-- ADMIN PANEL -->
+        <main class="max-w-7xl mx-auto px-6 py-12">
+            <!-- LIBRARY -->
+            <div id="home-page" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"></div>
+
+            <!-- CHAT SYSTEM -->
+            <div id="chat-page" class="hidden flex gap-6 h-[75vh]">
+                <div class="w-1/4 glass rounded-3xl p-6 overflow-y-auto">
+                    <h3 class="text-xs uppercase font-bold text-slate-500 mb-4 tracking-widest">Snap Messages</h3>
+                    <div id="dm-user-list" class="space-y-2"></div>
+                </div>
+                <div class="flex-grow flex flex-col glass rounded-3xl p-8">
+                    <h2 id="chat-header" class="text-indigo-400 font-800 uppercase mb-4 text-sm">Global Lobby</h2>
+                    <div id="chat-box" class="flex-grow overflow-y-auto space-y-2 mb-4 pr-4"></div>
+                    <div class="flex gap-4">
+                        <input type="text" id="chat-input" class="flex-grow bg-slate-900 border border-white/10 p-4 rounded-2xl outline-none text-white" placeholder="Wipes every 7:30...">
+                        <button onclick="sendChat()" class="bg-indigo-600 px-10 rounded-2xl font-bold uppercase">Send</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PLAYER -->
+            <div id="player-page" class="hidden">
+                <button onclick="showPage('home')" class="text-white mb-4 uppercase font-bold text-xs"><i class="fa-solid fa-arrow-left"></i> Back to Library</button>
+                <div id="game-container" class="w-full h-[75vh] bg-black rounded-[30px] overflow-hidden border-4 border-white/5"></div>
+                <div class="mt-10 max-w-3xl pb-20">
+                    <h3 class="text-xl font-800 text-white uppercase mb-6">Discussion</h3>
+                    <div class="glass p-6 rounded-3xl mb-6">
+                        <textarea id="comment-input" class="w-full bg-slate-900 p-4 rounded-xl text-white h-24 mb-4 outline-none" placeholder="Post a comment..."></textarea>
+                        <button onclick="postComment()" class="bg-indigo-600 px-8 py-3 rounded-xl font-bold uppercase">Post</button>
+                    </div>
+                    <div id="comment-list" class="space-y-4"></div>
+                </div>
+            </div>
+
+            <div id="logs-page" class="hidden max-w-2xl mx-auto space-y-4" id="log-container"></div>
+            
+            <div id="request-page" class="hidden max-w-md mx-auto text-center py-20">
+                <h2 class="text-2xl font-800 text-white uppercase mb-6">Request Game</h2>
+                <input type="text" id="req-val" class="w-full bg-slate-900 p-4 rounded-xl text-white mb-4" placeholder="Game title...">
+                <button onclick="submitRequest()" class="w-full bg-indigo-600 py-4 rounded-xl font-bold uppercase">Submit Request</button>
+            </div>
+        </main>
+    </div>
+
+    <!-- ADMIN CONSOLE -->
     <div id="admin-panel" class="hidden text-white">
         <div class="flex justify-between items-center mb-10">
-            <h2 class="text-3xl font-800 text-indigo-400 uppercase">Admin Command Center</h2>
+            <h2 class="text-3xl font-800 text-indigo-400 uppercase">Command Terminal</h2>
             <button onclick="toggleAdmin(false)" class="bg-white/10 px-6 py-2 rounded-xl font-bold">CLOSE</button>
         </div>
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            <div class="bg-white/5 p-6 rounded-3xl border border-white/10">
-                <h3 class="font-bold text-green-400 mb-4 uppercase">User Directory</h3>
+            <div class="bg-white/5 p-6 rounded-3xl">
+                <h3 class="font-bold text-green-400 mb-4 uppercase text-xs tracking-widest">Verified Directory</h3>
                 <div id="admin-user-list" class="space-y-2 h-64 overflow-y-auto text-sm"></div>
             </div>
-            <div class="bg-white/5 p-6 rounded-3xl border border-white/10">
-                <h3 class="font-bold text-red-400 mb-4 uppercase">Live Chat Spy</h3>
+            <div class="bg-white/5 p-6 rounded-3xl">
+                <h3 class="font-bold text-red-400 mb-4 uppercase text-xs tracking-widest">Live Snap Spy</h3>
                 <div id="admin-chat-spy" class="space-y-1 h-64 overflow-y-auto text-[10px] font-mono"></div>
             </div>
-            <div class="bg-white/5 p-6 rounded-3xl border border-white/10 col-span-full">
-                <h3 class="font-bold text-indigo-400 mb-4 uppercase">Broadcast & Log Tools</h3>
-                <input type="text" id="bc-msg" class="w-full bg-black p-4 rounded-xl mb-4 border border-white/10 text-white" placeholder="Message content...">
+            <div class="bg-white/5 p-6 rounded-3xl col-span-full">
+                <input type="text" id="bc-msg" class="w-full bg-black p-4 rounded-xl mb-4 text-white" placeholder="Broadcast/Log message...">
                 <div class="flex gap-4">
-                    <button onclick="sendBroadcast()" class="bg-red-600 px-6 py-2 rounded-lg font-bold">SET GLOBAL BROADCAST</button>
-                    <button onclick="addLog()" class="bg-indigo-600 px-6 py-2 rounded-lg font-bold">POST TO UPDATE LOGS</button>
-                    <button onclick="db.ref('settings/broadcast').remove()" class="bg-slate-700 px-6 py-2 rounded-lg font-bold">CLEAR BROADCAST</button>
+                    <button onclick="sendBroadcast()" class="bg-red-600 px-6 py-2 rounded-lg font-bold">BROADCAST</button>
+                    <button onclick="addLog()" class="bg-indigo-600 px-6 py-2 rounded-lg font-bold">POST UPDATE LOG</button>
+                    <button onclick="db.ref('settings/broadcast').remove()" class="bg-slate-700 px-6 py-2 rounded-lg font-bold">CLEAR</button>
                 </div>
             </div>
-            <div class="bg-white/5 p-6 rounded-3xl border border-white/10 col-span-full">
-                <h3 class="font-bold text-yellow-400 mb-4 uppercase">Requests Hub</h3>
+            <div class="bg-white/5 p-6 rounded-3xl col-span-full">
+                <h3 class="font-bold text-yellow-400 mb-4 uppercase text-xs">Request Queue</h3>
                 <div id="admin-req-list" class="space-y-2"></div>
             </div>
         </div>
@@ -203,15 +193,40 @@
 
         let myHandle = localStorage.getItem('cp_handle') || "";
         let realName = localStorage.getItem('cp_realname') || "";
-        let isAdmin = false;
-        let sequence = [];
-        let currentGame = "";
-        let currentChatTarget = "global";
-        let typedKeys = "";
-        let adminStep1 = false;
-        const FILTER = ["fuck", "nigger", "nigger", "bitch", "shit", "retard", "faggot"]; 
+        let sequence = [], typedKeys = "", isAdmin = false, adminStep1 = false, currentGame = "", currentChatTarget = "global";
 
-        // 1. CLOAK & SEQUENCE
+        const FILTER = ["fuck", "nigger", "shit", "bitch", "retard", "faggot", "slut"];
+
+        const GAMES = [
+            { n: "Basket Battle", u: "https://html5.gamedistribution.com/rvvASMiM/d7e65a097a6a4c8fb578af5fc0e163ca/", s: "Competitive Dunks", t: "Sports", i: "https://i.ibb.co/21V6w5HT/basket-battle-zmg-16x9-cover.avif" },
+            { n: "Retro Bowl", u: "https://game316009.konggames.com/gamez/0031/6009/live/index.html", s: "Best Mobile NFL", t: "Sports", i: "https://i.ibb.co/dJWtJSfH/retro-bowl.jpg" },
+            { n: "Slope", u: "https://slope-unblocked-10x.github.io/action-games/slope/", s: "High speed ball", t: "Skill", i: "https://i.ibb.co/jvNVVNdD/slope.jpg" },
+            { n: "Wordle", u: "https://1games.io/game/wordle/", s: "Guess the word", t: "Word", i: "https://i.ibb.co/WCd0hfG/wordle-logo.webp" },
+            { n: "Space Waves", u: "https://spacewavesgame.io/game/space-waves/", s: "Sync to rhythm", t: "Skill", i: "https://i.ibb.co/tPM9Vywg/space-waves-f546x307.webp" },
+            { n: "Solar Smash", u: "https://www.yad.com/games/Solar-Smash/index.html", s: "Planet destroyer", t: "Simulator", i: "https://i.ibb.co/sd68rBLx/capsule-616x353.jpg" },
+            { n: "Temple Run 2", u: "https://azgames.io/game/temple-run-2/", s: "Infinite runner", t: "Action", i: "https://i.ibb.co/HTYDJmRP/748a24b37754e55d3a08829d0056ce68-fgraphic.png" },
+            { n: "Stickman Hook", u: "https://stickmanhook2.io/game/stickman-hook/", s: "Grapple physics", t: "Physics", i: "https://i.ibb.co/F4b6JnSZ/stick-hook-game1.png" },
+            { n: "Rooftop Snipers", u: "https://slope-unblocked-10x.github.io/action-games/rooftop-snipers/", s: "Duels on roof", t: "Action", i: "https://i.ibb.co/msT16PH/unnamed.webp" },
+            { n: "Flappy Bird", u: "https://class811.github.io/g8/flappy-bird-origin", s: "OG bird game", t: "Casual", i: "https://i.ibb.co/mFSR39tb/flappybird.png" },
+            { n: "Monster Tracks", u: "https://class811.github.io/g5/monster-tracks", s: "4x4 Trucking", t: "Driving", i: "https://i.ibb.co/TBR30PKS/Monster-Tracks-Games.jpg" },
+            { n: "Retro Bowl College", u: "https://game.play-retro-bowl.com/retro-bowl-games/retro-bowl-college/retro-bowl-college.html", s: "NCAA Management", t: "Sports", i: "https://i.ibb.co/JjCxbNgw/retro-bowl-college.jpg" },
+            { n: "Eggy Car", u: "https://1games.io/game/eggy-car/", s: "Balanced driving", t: "Driving", i: "https://i.ibb.co/2JQJMQd/eggycar.jpg" },
+            { n: "Basketball Legends", u: "https://html5.gamedistribution.com/rvvASMiM/69d78d071f704fa183d75b4114ae40ec/", s: "2-Player Hoops", t: "Sports", i: "https://i.ibb.co/3yjs0jDw/basketball-legends.png" },
+            { n: "Polytrack", u: "https://html-classic.itch.zone/html/15451330/index.html", s: "3D track builder", t: "Racing", i: "https://i.ibb.co/5x9bRwgY/polytrack-16x9-cover.avif" },
+            { n: "Geometry Dash", u: "https://1games.io/game/geometry-dash-lite/", s: "Neon jumps", t: "Rhythm", i: "https://i.ibb.co/9mQ3RBZK/geometrydash.webp" },
+            { n: "FNAF 1", u: "https://run3.io/popgame/fnaf/fnaf1/", s: "The Original Night", t: "Horror", i: "https://i.ibb.co/3gtbVRb/fnaf1-png.jpg" },
+            { n: "FNAF 2", u: "https://run3.io/popgame/fnaf/fnaf2.html", s: "The sequel", t: "Horror", i: "https://i.ibb.co/B2Lknypx/fnaf2-png.png" },
+            { n: "Sister Location", u: "https://irv77.github.io/hd_fnaf/sl/", s: "Circus Baby", t: "Horror", i: "https://i.ibb.co/C5VSHD0f/fnafsl-png.webp" },
+            { n: "Drift Boss", u: "https://gamecollections.me/game/owner/drift-boss-gm/", s: "Master the turn", t: "Driving", i: "https://i.ibb.co/4ZZKCvxG/driftboss.webp" },
+            { n: "Coreball", u: "https://iogamesweb.com/play/core-ball/", s: "High speed timing", t: "Skill", i: "https://i.ibb.co/j9bPf7Q0/coreball.jpg" },
+            { n: "BitLife", u: "https://slope-unblocked-10x.github.io/strategy-games/bitlife/", s: "Simulate life", t: "Simulator", i: "https://i.ibb.co/QFJ1TCwr/bitlife.jpg" },
+            { n: "Terraria", u: "https://slope-unblocked-10x.github.io/action-games/terraira/", s: "Sandbox adventure", t: "Action", i: "https://i.ibb.co/qL7B9k8g/terraria.jpg" },
+            { n: "Subway Surfers", u: "https://slope-unblocked-10x.github.io/action-games/subway-surfers/", s: "Train dodging", t: "Runner", i: "https://i.ibb.co/rR7BSCqr/subway-surfers-header2.avif" },
+            { n: "Ragdoll Archers", u: "https://jasongamesdev.github.io/ragdoll-archers/", s: "Physics bow game", t: "Action", i: "https://i.ibb.co/7dkK7ZfJ/ragdollarchers.jpg" },
+            { n: "Minecraft", u: "https://precisionclient.pages.dev/", s: "Web Port", t: "Creative", i: "https://i.ibb.co/9mQ3RBZK/geometrydash.webp" }
+        ];
+
+        // 1. CLOAK & PANIC
         document.getElementById('secret-1').onclick = () => pushSeq(1);
         document.getElementById('secret-2').onclick = () => pushSeq(2);
         document.getElementById('secret-3').onclick = () => pushSeq(3);
@@ -219,38 +234,39 @@
         function pushSeq(num) {
             sequence.push(num);
             if(sequence.length === 3) {
-                if(JSON.stringify(sequence) === "[1,2,3]") {
-                    const pw = prompt("ENTER ACCESS CODE:");
-                    if(pw === "membean1234") {
-                        document.getElementById('cloak-screen').classList.add('hidden');
-                        checkAuth();
-                    }
+                if(JSON.stringify(sequence) === "[1,2,3]" && prompt("ENTER PASSKEY:") === "membean1234") {
+                    document.getElementById('cloak-screen').classList.add('hidden');
+                    checkAuth();
                 }
                 sequence = [];
             }
         }
 
-        // 2. SECRET COMMANDS
+        function panic() {
+            localStorage.removeItem('cp_handle');
+            localStorage.removeItem('cp_realname');
+            window.location.replace("https://membean.com/dashboard");
+        }
+
+        // 2. SECRET COMMANDS (Work during lockdown)
         window.addEventListener('keydown', (e) => {
             typedKeys += e.key;
-            if (typedKeys.length > 30) typedKeys = typedKeys.substring(15);
-            
             if (typedKeys.endsWith('159membean951')) adminStep1 = true;
             if (adminStep1 && typedKeys.endsWith('159admin951')) {
-                const p = prompt("ADMIN PASSKEY:");
-                if (p === "membean1234") { isAdmin = true; toggleAdmin(true); }
+                if (prompt("PASSKEY:") === "membean1234") { isAdmin = true; toggleAdmin(true); }
                 adminStep1 = false;
             }
             if (typedKeys.endsWith('1919lockserver2121')) db.ref('settings/maintenance').set(true);
             if (typedKeys.endsWith('1919unlock2121')) db.ref('settings/maintenance').set(false);
+            if (typedKeys.length > 50) typedKeys = "";
         });
 
         // 3. AUTH
         function checkAuth() {
             if(!myHandle || !realName) {
-                const adj = ["Neon", "Quiet", "Shadow", "Retro", "Alpha", "Hyper"];
-                const noun = ["Couch", "Pillow", "Gamer", "Wizard", "Ninja", "User"];
-                myHandle = adj[Math.floor(Math.random()*adj.length)] + noun[Math.floor(Math.random()*noun.length)] + Math.floor(Math.random()*99);
+                const adj = ["Neon", "Quiet", "Retro", "Hyper", "Frost"];
+                const noun = ["Couch", "Pillow", "Ghost", "Wizard", "Ninja"];
+                myHandle = adj[Math.floor(Math.random()*5)] + noun[Math.floor(Math.random()*5)] + Math.floor(Math.random()*99);
                 document.getElementById('assigned-handle').innerText = myHandle;
                 document.getElementById('onboarding').classList.remove('hidden');
             } else { startApp(); }
@@ -258,131 +274,99 @@
 
         function finishOnboarding() {
             const name = document.getElementById('real-name-input').value.trim();
-            if(name.length < 2) return alert("Real Name Required.");
+            if(name.length < 2) return alert("Verification Failed.");
             realName = name;
             localStorage.setItem('cp_handle', myHandle);
             localStorage.setItem('cp_realname', realName);
-            db.ref('users/' + myHandle).set({ realName: name, joined: Date.now() });
+            db.ref('users/' + myHandle).set({ realName: name });
             document.getElementById('onboarding').classList.add('hidden');
             startApp();
         }
 
-        // 4. THE JANITOR (7:30 CYCLE)
+        // 4. THE JANITOR
         function startJanitor() {
             setInterval(() => {
-                const now = Date.now();
-                const cycle = 450000; 
-                const timeLeft = cycle - (now % cycle);
-                const m = Math.floor(timeLeft / 60000);
-                const s = Math.floor((timeLeft % 60000) / 1000);
-                document.getElementById('wipe-timer').innerText = `${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`;
+                const now = Date.now(), cycle = 450000, timeLeft = cycle - (now % cycle);
+                document.getElementById('wipe-timer').innerText = `${Math.floor(timeLeft/60000).toString().padStart(2,'0')}:${Math.floor((timeLeft%60000)/1000).toString().padStart(2,'0')}`;
                 if(timeLeft < 2000) { db.ref('chats').remove(); db.ref('dms').remove(); }
             }, 1000);
         }
 
-        // 5. CHAT & DMs
-        function setChatTarget(target) {
-            currentChatTarget = target;
-            document.getElementById('chat-header').innerText = target === 'global' ? "Global Lobby" : "DM: " + target;
-            loadMessages();
+        // 5. CHAT
+        function setChatTarget(t) {
+            currentChatTarget = t;
+            document.getElementById('chat-header').innerText = t === 'global' ? "Global Lobby" : "DM: " + t;
+            const path = t === 'global' ? 'chats' : 'dms/' + [myHandle, t].sort().join('_');
+            db.ref(path).on('value', s => {
+                let h = "";
+                for(let k in s.val()) h += `<div class='chat-bubble'><b class='text-indigo-400'>${s.val()[k].user || s.val()[k].from}:</b> ${s.val()[k].msg}</div>`;
+                document.getElementById('chat-box').innerHTML = h;
+                document.getElementById('chat-box').scrollTop = 99999;
+            });
         }
 
         function sendChat() {
             const el = document.getElementById('chat-input');
-            let txt = el.value.trim();
-            if(!txt) return;
-            FILTER.forEach(w => { txt = txt.replace(new RegExp(w, 'gi'), "****"); });
-            if (currentChatTarget === 'global') {
-                db.ref('chats').push({ user: myHandle, msg: txt, time: Date.now() });
-            } else {
-                const threadId = [myHandle, currentChatTarget].sort().join('_');
-                db.ref('dms/' + threadId).push({ from: myHandle, to: currentChatTarget, msg: txt, time: Date.now() });
-            }
+            let txt = el.value.trim(); if(!txt) return;
+            FILTER.forEach(w => txt = txt.replace(new RegExp(w, 'gi'), "****"));
+            if (currentChatTarget === 'global') db.ref('chats').push({ user: myHandle, msg: txt });
+            else db.ref('dms/' + [myHandle, currentChatTarget].sort().join('_')).push({ from: myHandle, msg: txt });
             el.value = "";
         }
 
-        function loadMessages() {
-            if (currentChatTarget === 'global') {
-                db.ref('chats').on('value', s => renderMessages(s.val()));
-            } else {
-                const threadId = [myHandle, currentChatTarget].sort().join('_');
-                db.ref('dms/' + threadId).on('value', s => renderMessages(s.val()));
-            }
+        // 6. RENDER
+        function renderGames() {
+            const container = document.getElementById('home-page');
+            container.innerHTML = GAMES.map(g => `
+                <div class="game-card p-4" onclick="launchGame('${g.n}', '${g.u}')">
+                    <div class="h-40 bg-slate-900 rounded-2xl mb-4 overflow-hidden"><img src="${g.i}" class="w-full h-full object-cover"></div>
+                    <h3 class="font-bold text-sm text-white">${g.n}</h3>
+                    <p class="text-[10px] text-slate-500 mb-2">${g.s}</p>
+                    <div class="tag">${g.t}</div>
+                </div>
+            `).join('');
         }
 
-        function renderMessages(data) {
-            let h = "";
-            for(let k in data) {
-                const item = data[k];
-                h += `<div class='chat-bubble'><b class='text-indigo-400'>${item.user || item.from}:</b> ${item.msg}</div>`;
-            }
-            const box = document.getElementById('chat-box');
-            box.innerHTML = h;
-            box.scrollTop = box.scrollHeight;
-        }
-
-        // 6. COMMENTS SYSTEM
-        function postComment() {
-            const el = document.getElementById('comment-input');
-            let txt = el.value.trim();
-            if(!txt || !currentGame) return;
-            FILTER.forEach(w => { txt = txt.replace(new RegExp(w, 'gi'), "****"); });
-            db.ref(`comments/${currentGame}`).push({ user: myHandle, msg: txt });
-            el.value = "";
-        }
-
-        function deleteComment(id) {
-            if(isAdmin) db.ref(`comments/${currentGame}/${id}`).remove();
-        }
-
-        // 7. BROADCAST & LOGS
-        function sendBroadcast() {
-            const val = document.getElementById('bc-msg').value;
-            if(val) db.ref('settings/broadcast').set(val);
-            document.getElementById('bc-msg').value = "";
-        }
-
-        function addLog() {
-            const val = document.getElementById('bc-msg').value;
-            if(val) db.ref('logs').push({ title: "Update " + new Date().toLocaleDateString(), text: val });
-            document.getElementById('bc-msg').value = "";
-        }
-
-        // APP CORE
         function startApp() {
+            document.getElementById('main-app').classList.remove('hidden');
             document.getElementById('user-display').innerText = myHandle;
-            startJanitor();
-            setChatTarget('global');
+            renderGames(); startJanitor(); setChatTarget('global');
             
-            db.ref('settings/maintenance').on('value', s => document.getElementById('maintenance-screen').classList.toggle('hidden', !s.val()));
-            db.ref('settings/broadcast').on('value', s => {
-                const bar = document.getElementById('broadcast-banner');
-                if(s.val()) { bar.innerText = s.val(); bar.classList.remove('hidden'); }
-                else bar.classList.add('hidden');
+            db.ref('settings/maintenance').on('value', s => {
+                const screen = document.getElementById('maintenance-screen');
+                if(s.val() === true) screen.classList.remove('hidden');
+                else screen.classList.add('hidden');
             });
+
+            db.ref('settings/broadcast').on('value', s => {
+                const b = document.getElementById('broadcast-banner');
+                if(s.val()) { b.innerText = s.val(); b.classList.remove('hidden'); } else b.classList.add('hidden');
+            });
+
             db.ref('logs').on('value', s => {
                 let h = "";
-                for(let k in s.val()) h += `<div class='glass p-6 rounded-3xl'><h4 class='font-bold text-indigo-400'>${s.val()[k].title}</h4><p class='text-slate-400 text-sm'>${s.val()[k].text}</p></div>`;
-                document.getElementById('log-container').innerHTML = h;
+                for(let k in s.val()) h += `<div class='glass p-6 rounded-3xl'><h4 class='font-bold text-indigo-400'>${s.val()[k].title}</h4><p class='text-slate-400 text-xs'>${s.val()[k].text}</p></div>`;
+                document.getElementById('logs-page').innerHTML = h;
             });
+
             db.ref('users').on('value', s => {
-                let h = "<button onclick=\"setChatTarget('global')\" class='w-full text-left p-3 rounded-xl bg-white/5 font-bold text-indigo-400 uppercase text-[10px]'># Global Lobby</button>";
-                for(let k in s.val()) if(k !== myHandle) h += `<button onclick="setChatTarget('${k}')" class='w-full text-left p-3 rounded-xl hover:bg-white/5 transition text-xs'>@ ${k}</button>`;
+                let h = `<button onclick="setChatTarget('global')" class="w-full text-left p-3 rounded-xl bg-indigo-500/10 text-indigo-400 font-bold text-[10px]"># GLOBAL</button>`;
+                for(let k in s.val()) if(k !== myHandle) h += `<button onclick="setChatTarget('${k}')" class="w-full text-left p-3 rounded-xl hover:bg-white/5 transition text-xs">@ ${k}</button>`;
                 document.getElementById('dm-user-list').innerHTML = h;
             });
         }
 
-        function launchGame(name, url) {
-            currentGame = name.replace(/\s/g, '');
+        function launchGame(n, u) {
+            currentGame = n.replace(/\s/g, '');
             showPage('player');
-            document.getElementById('game-container').innerHTML = `<iframe src="${url}" class="w-full h-full border-none"></iframe>`;
+            document.getElementById('game-container').innerHTML = `<iframe src="${u}" class="w-full h-full border-none"></iframe>`;
             db.ref(`comments/${currentGame}`).on('value', s => {
                 let h = "";
                 for(let k in s.val()) h += `
                     <div class="comment-box text-white">
                         <div class="flex justify-between items-start">
                             <span class="font-bold text-indigo-400 text-xs">${s.val()[k].user}</span>
-                            ${isAdmin ? `<button onclick="deleteComment('${k}')" class="text-[9px] bg-red-600 px-2 py-1 rounded font-bold uppercase">Delete Message</button>` : ''}
+                            ${isAdmin ? `<button onclick="db.ref('comments/${currentGame}/${k}').remove()" class="text-[9px] bg-red-600 px-2 py-1 rounded font-bold uppercase">Delete Message</button>` : ''}
                         </div>
                         <p class="text-slate-300 mt-2 text-sm">${s.val()[k].msg}</p>
                     </div>`;
@@ -390,43 +374,35 @@
             });
         }
 
+        function postComment() {
+            const el = document.getElementById('comment-input');
+            let txt = el.value.trim(); if(!txt) return;
+            FILTER.forEach(w => txt = txt.replace(new RegExp(w, 'gi'), "****"));
+            db.ref(`comments/${currentGame}`).push({ user: myHandle, msg: txt });
+            el.value = "";
+        }
+
         function showPage(p) {
             ['home', 'chat', 'player', 'request', 'logs'].forEach(id => document.getElementById(id + '-page').classList.add('hidden'));
             document.getElementById(p + '-page').classList.remove('hidden');
         }
 
-        function submitRequest() {
-            const v = document.getElementById('req-val').value;
-            if(v) db.ref('requests').push({ name: v, user: myHandle });
-            document.getElementById('req-val').value = "";
-            alert("Sent!");
-        }
-
-        function toggleAdmin(show) {
-            document.getElementById('admin-panel').classList.toggle('hidden', !show);
-            if(show) {
+        function toggleAdmin(s) {
+            document.getElementById('admin-panel').classList.toggle('hidden', !s);
+            if(s) {
                 db.ref('users').on('value', s => {
-                    let h = "";
-                    for(let k in s.val()) h += `<div class='p-2 bg-white/5 rounded'><b>${k}:</b> ${s.val()[k].realName}</div>`;
+                    let h = ""; for(let k in s.val()) h += `<div><b>${k}:</b> ${s.val()[k].realName}</div>`;
                     document.getElementById('admin-user-list').innerHTML = h;
                 });
                 db.ref('chats').on('value', s => {
-                    let h = "";
-                    for(let k in s.val()) h += `<div>[GLOBAL] ${s.val()[k].user}: ${s.val()[k].msg}</div>`;
+                    let h = ""; for(let k in s.val()) h += `<div class='text-green-400'>[G] ${s.val()[k].user}: ${s.val()[k].msg}</div>`;
                     document.getElementById('admin-chat-spy').innerHTML = h;
-                });
-                db.ref('dms').on('value', s => {
-                    let h = "";
-                    for(let t in s.val()) for(let k in s.val()[t]) h += `<div class='text-indigo-400'>[DM ${t}] ${s.val()[t][k].from}: ${s.val()[t][k].msg}</div>`;
-                    document.getElementById('admin-chat-spy').innerHTML += h;
-                });
-                db.ref('requests').on('value', s => {
-                    let h = "";
-                    for(let k in s.val()) h += `<div class='flex justify-between bg-white/5 p-2 rounded'><span>${s.val()[k].name}</span><button onclick="db.ref('requests/${k}').remove()">X</button></div>`;
-                    document.getElementById('admin-req-list').innerHTML = h;
                 });
             }
         }
+        function sendBroadcast() { db.ref('settings/broadcast').set(document.getElementById('bc-msg').value); document.getElementById('bc-msg').value = ""; }
+        function addLog() { db.ref('logs').push({ title: "Update " + new Date().toLocaleDateString(), text: document.getElementById('bc-msg').value }); document.getElementById('bc-msg').value = ""; }
+        function submitRequest() { if(document.getElementById('req-val').value) db.ref('requests').push({ name: document.getElementById('req-val').value, user: myHandle }); document.getElementById('req-val').value = ""; alert("Sent!"); }
     </script>
 </body>
 </html>
