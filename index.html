@@ -181,33 +181,42 @@
         let myHandle = localStorage.getItem('cp_handle') || "";
         let realName = localStorage.getItem('cp_realname') || "";
         let sequence = [], typedKeys = "", isAdmin = false, currentGame = "", currentChatTarget = "global";
-        const FILTER = ["fuck", "nigger", "shit", "bitch", "retard", "faggot", "slut", "cum", "sex"];
+        const FILTER = ["fuck", "nigger", "shit", "bitch", "retard", "faggot", "slut", "cum", "sex", "nigga", "rape", "nut", "ass", "asshole", "fucking", "pussy", "dick", "cock", "grape", "fucker"];
 
         const GAMES = [
-            { n: "House of Hazards", u: "https://lolygames.github.io/house-of-hazards/", s: "A crazy house", t: "2 Player", i: "https://i.ibb.co/Lz0H0tRr/house-of-hazards-16x9-cover.avif" },
-            { n: "Granny", u: "https://1games.io/game/granny-horror/", s: "Survive the granny", t: "Horror", i: "https://i.ibb.co/8Db8BL5V/enlarged.jpg" },
             { n: "Basket Battle", u: "https://html5.gamedistribution.com/rvvASMiM/d7e65a097a6a4c8fb578af5fc0e163ca/", s: "Competitive Dunking", t: "Sports", i: "https://i.ibb.co/21V6w5HT/basket-battle-zmg-16x9-cover.avif" },
             { n: "Retro Bowl", u: "https://game316009.konggames.com/gamez/0031/6009/live/index.html", s: "NFL Strategy", t: "Sports", i: "https://i.ibb.co/dJWtJSfH/retro-bowl.jpg" },
             { n: "Slope", u: "https://slope-unblocked-10x.github.io/action-games/slope/", s: "High speed ball", t: "Skill", i: "https://i.ibb.co/jvNVVNdD/slope.jpg" },
             { n: "Wordle", u: "https://1games.io/game/wordle/", s: "Daily word guess", t: "Word", i: "https://i.ibb.co/WCd0hfG/wordle-logo.webp" },
             { n: "Space Waves", u: "https://spacewavesgame.io/game/space-waves/", s: "Neon rhythm arcade", t: "Skill", i: "https://i.ibb.co/tPM9Vywg/space-waves-f546x307.webp" },
-            { n: "Subway Surfers", u: "https://slope-unblocked-10x.github.io/action-games/subway-surfers/", s: "Train dodging", t: "Runner", i: "https://i.ibb.co/rR7BSCqr/subway-surfers-header2.avif" },
-            { n: "FNAF 1", u: "https://run3.io/popgame/fnaf/fnaf1/", s: "The Original Night", t: "Horror", i: "https://i.ibb.co/3gtbVRb/fnaf1-png.jpg" },
+            { n: "Solar Smash", u: "https://www.yad.com/games/Solar-Smash/index.html", s: "Planet destroyer", t: "Simulator", i: "https://i.ibb.co/sd68rBLx/capsule-616x353.jpg" },
+            { n: "Stickman Hook", u: "https://stickmanhook2.io/game/stickman-hook/", s: "Physics grapple", t: "Physics", i: "https://i.ibb.co/F4b6JnSZ/stick-hook-game1.png" },
+            { n: "Subway Surfers", u: "https://slope-unblocked-10x.github.io/action-games/subway-surfers/", s: "Run from inspector", t: "Runner", i: "https://i.ibb.co/rR7BSCqr/subway-surfers-header2.avif" },
+            { n: "Geometry Dash", u: "https://1games.io/game/geometry-dash-lite/", s: "Rhythm jumps", t: "Rhythm", i: "https://i.ibb.co/9mQ3RBZK/geometrydash.webp" },
             { n: "BitLife", u: "https://slope-unblocked-10x.github.io/strategy-games/bitlife/", s: "Live a virtual life", t: "Sim", i: "https://i.ibb.co/QFJ1TCwr/bitlife.jpg" },
-            { n: "Minecraft", u: "https://precisionclient.pages.dev/", s: "Creative Web", t: "Creative", i: "https://i.ibb.co/9mQ3RBZK/geometrydash.webp" },
-            { n: "Stickman Hook", u: "https://stickmanhook2.io/game/stickman-hook/", s: "Grappling physics", t: "Physics", i: "https://i.ibb.co/F4b6JnSZ/stick-hook-game1.png" },
-            { n: "Geometry Dash", u: "https://1games.io/game/geometry-dash-lite/", s: "Jump to beat", t: "Rhythm", i: "https://i.ibb.co/9mQ3RBZK/geometrydash.webp" },
-            { n: "Rooftop Snipers", u: "https://slope-unblocked-10x.github.io/action-games/rooftop-snipers/", s: "Physics duels", t: "2 Player", i: "https://i.ibb.co/msT16PH/unnamed.webp" },
-            { n: "Monster Tracks", u: "https://class811.github.io/g5/monster-tracks", s: "4x4 Driving", t: "Driving", i: "https://i.ibb.co/TBR30PKS/Monster-Tracks-Games.jpg" },
-            { n: "Ragdoll Archers", u: "https://jasongamesdev.github.io/ragdoll-archers/", s: "Physics bow combat", t: "Action", i: "https://i.ibb.co/7dkK7ZfJ/ragdollarchers.jpg" },
-            { n: "Terraria", u: "https://slope-unblocked-10x.github.io/action-games/terraira/", s: "Adventure Crafting", t: "Adventure", i: "https://i.ibb.co/qL7B9k8g/terraria.jpg" },
-            { n: "Coreball", u: "https://iogamesweb.com/play/core-ball/", s: "Precision timing", t: "Skill", i: "https://i.ibb.co/j9bPf7Q0/coreball.jpg" },
-            { n: "FNAF 2", u: "https://run3.io/popgame/fnaf/fnaf2.html", s: "New animatronics", t: "Horror", i: "https://i.ibb.co/B2Lknypx/fnaf2-png.png" },
+            { n: "Basket Random", u: "https://basketrandom.io/basket-random", s: "Crazy physics hoops", t: "Sports", i: "https://i.ibb.co/fdwhjTkR/basket-random-16x9-cover.avif" },
+            { n: "FNAF 1", u: "https://run3.io/popgame/fnaf/fnaf1/", s: "Original horror", t: "Horror", i: "https://i.ibb.co/3gtbVRb/fnaf1-png.jpg" },
+            { n: "FNAF 2", u: "https://run3.io/popgame/fnaf/fnaf2.html", s: "The sequel", t: "Horror", i: "https://i.ibb.co/B2Lknypx/fnaf2-png.png" },
+            { n: "Sister Location", u: "https://irv77.github.io/hd_fnaf/sl/", s: "Circus Baby's nights", t: "Horror", i: "https://i.ibb.co/C5VSHD0f/fnafsl-png.webp" },
+            { n: "Drift Boss", u: "https://gamecollections.me/game/owner/drift-boss-gm/", s: "One-tap drift", t: "Driving", i: "https://i.ibb.co/4ZZKCvxG/driftboss.webp" },
+            { n: "Eggy Car", u: "https://1games.io/game/eggy-car/", s: "Balance the egg", t: "Driving", i: "https://i.ibb.co/2JQJMQd/eggycar.jpg" },
+            { n: "Temple Run 2", u: "https://azgames.io/game/temple-run-2/", s: "Classic runner", t: "Action", i: "https://i.ibb.co/HTYDJmRP/748a24b37754e55d3a08829d0056ce68-fgraphic.png" },
+            { n: "Rooftop Snipers", u: "https://slope-unblocked-10x.github.io/action-games/rooftop-snipers/", s: "Physics duels", t: "Action", i: "https://i.ibb.co/msT16PH/unnamed.webp" },
+            { n: "Ragdoll Archers", u: "https://jasongamesdev.github.io/ragdoll-archers/", s: "Aim and shoot", t: "Action", i: "https://i.ibb.co/7dkK7ZfJ/ragdollarchers.jpg" },
+            { n: "Polytrack", u: "https://html-classic.itch.zone/html/15451330/index.html", s: "3D track build", t: "Racing", i: "https://i.ibb.co/5x9bRwgY/polytrack-16x9-cover.avif" },
+            { n: "Flappy Bird", u: "https://class811.github.io/g8/flappy-bird-origin", s: "Classic taps", t: "Casual", i: "https://i.ibb.co/mFSR39tb/flappybird.png" },
+            { n: "Hardest Game", u: "https://slope-unblocked-10x.github.io/action-games/worlds-hardest-game/", s: "Stay focused", t: "Skill", i: "https://i.ibb.co/vCbnM142/Worlds-Hardest-Game-OG-logo.jpg" },
+            { n: "Coreball", u: "https://iogamesweb.com/play/core-ball/", s: "Don't hit other balls", t: "Skill", i: "https://i.ibb.co/j9bPf7Q0/coreball.jpg" },
+            { n: "Bloxorz", u: "https://slope-unblocked-10x.github.io/strategy-games/bloxors/", s: "The rolling block", t: "Puzzle", i: "https://i.ibb.co/WbQ5ks9/Bloxorz-OG-logo-jpg.webp" },
+            { n: "Monster Tracks", u: "https://class811.github.io/g5/monster-tracks", s: "Rugged driving", t: "Driving", i: "https://i.ibb.co/TBR30PKS/Monster-Tracks-Games.jpg" },
+            { n: "Terraria", u: "https://slope-unblocked-10x.github.io/action-games/terraira/", s: "Web adventure", t: "Adventure", i: "https://i.ibb.co/qL7B9k8g/terraria.jpg" },
+            { n: "Retro Bowl College", u: "https://game.play-retro-bowl.com/retro-bowl-games/retro-bowl-college/retro-bowl-college.html", s: "NCAA Style", t: "Sports", i: "https://i.ibb.co/JjCxbNgw/retro-bowl-college.jpg" },
+            { n: "Basketball Legends", u: "https://html5.gamedistribution.com/rvvASMiM/69d78d071f704fa183d75b4114ae40ec/", s: "NBA Stars", t: "Sports", i: "https://i.ibb.co/3yjs0jDw/basketball-legends.png" },
             { n: "Snow Rider 3D", u: "https://snowrider3d.com/snow-rider-3d", s: "High speed sled", t: "Sports", i: "https://i.ibb.co/Y43mrt5S/snowrider3d.webp" },
-            { n: "Red Ball 4", u: "https://playredball4.com/wp-content/uploads/games/redball4/", s: "Physics bouncing", t: "Platformer", i: "https://i.ibb.co/rRVfB5Ls/orig.png" },
-            { n: "Bloxorz", u: "https://slope-unblocked-10x.github.io/strategy-games/bloxors/", s: "Rolling block", t: "Puzzle", i: "https://i.ibb.co/WbQ5ks9/Bloxorz-OG-logo-jpg.webp" },
-            { n: "Sister Location", u: "https://irv77.github.io/hd_fnaf/sl/", s: "Underground Horror", t: "Horror", i: "https://i.ibb.co/C5VSHD0f/fnafsl-png.webp" },
-            { n: "FNAF 6", u: "https://irv77.github.io/hd_fnaf/ps/", s: "Pizza Simulator", t: "Horror", i: "https://i.ibb.co/VcqtTPW5/fnaf6-png.webp" }
+            { n: "Red Ball 4", u: "https://playredball4.com/wp-content/uploads/games/redball4/", s: "Physics bounce", t: "Platformer", i: "https://i.ibb.co/rRVfB5Ls/orig.png" },
+            { n: "FNAF 3", u: "https://run3.io/popgame/fnaf/fnaf3.html", s: "Attraction Horror", t: "Horror", i: "https://i.ibb.co/7tq506sL/fnaf3-png.jpg" },
+            { n: "FNAF 4", u: "https://run3.io/popgame/fnaf/fnaf4.html", s: "Bedroom horror", t: "Horror", i: "https://i.ibb.co/wNkvDc2m/fnaf4-png.jpg" },
+            { n: "FNAF 6", u: "https://irv77.github.io/hd_fnaf/ps/", s: "Pizza Sim Horror", t: "Horror", i: "https://i.ibb.co/VcqtTPW5/fnaf6-png.webp" }
         ];
 
         // 1. CLOAK & PANIC
