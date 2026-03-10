@@ -22,7 +22,7 @@
         .mb-footer { position: fixed; bottom: 10px; color: #999; font-size: 12px; display: flex; gap: 15px; }
         
         /* APP STYLES */
-        body { font-family: 'Outfit', sans-serif; background-color: #0b0e14; color: #e2e8f0; margin:0; }
+        body { font-family: 'Outfit', sans-serif; background-color: #0b0e14; color: #e2e8f0; margin:0; overflow-x: hidden; }
         .glass { background: rgba(23, 28, 41, 0.8); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(255,255,255,0.05); }
         .game-card { background: #1a202c; border-radius: 30px; transition: all 0.3s ease; overflow: hidden; border: 1px solid rgba(255,255,255,0.03); cursor: pointer; }
         .game-card:hover { transform: translateY(-5px); border-color: #6366f1; }
@@ -30,16 +30,28 @@
         .tag { font-size: 9px; padding: 2px 8px; border-radius: 10px; background: rgba(99, 102, 241, 0.1); color: #a5b4fc; font-weight: bold; text-transform: uppercase; }
         
         #admin-panel { position: fixed; inset: 0; background: #020617; z-index: 9000; padding: 40px; overflow-y: auto; }
+        #maintenance-screen { position: fixed; inset: 0; background: #0b0e14; z-index: 11000; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
+        #broadcast-banner { background: #ef4444; color: white; text-align: center; padding: 10px; font-weight: 800; font-size: 12px; text-transform: uppercase; letter-spacing: 1px; }
+        
         .wipe-timer { color: #ef4444; font-weight: 800; font-family: monospace; }
         .comment-box { background: rgba(255,255,255,0.03); padding: 15px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.05); }
+        .chat-bubble { background: rgba(255,255,255,0.05); padding: 12px; border-radius: 15px; margin-bottom: 8px; border: 1px solid rgba(255,255,255,0.03); }
     </style>
 </head>
 <body>
 
-    <!-- 1. THE CLOAK (MEMBEAN LOOKALIKE) -->
+    <!-- 1. LOCKDOWN SCREEN -->
+    <div id="maintenance-screen" class="hidden">
+        <i class="fa-solid fa-lock text-red-500 text-6xl mb-6"></i>
+        <h1 class="text-3xl font-800 text-white uppercase">Server Lockdown</h1>
+        <p class="text-slate-500 mt-2">The admin has temporarily restricted access.</p>
+    </div>
+
+    <!-- 2. THE CLOAK (MEMBEAN LOOKALIKE) -->
     <div id="cloak-screen">
         <div class="mb-card">
-            <img src="https://i.ibb.co/3Wfzq60/membean-logo.png" id="secret-1" class="h-10 mx-auto mb-8 cursor-default" style="filter: hue-rotate(180deg);">
+            <!-- Provided Logo -->
+            <img src="https://i.ibb.co/3Wfzq60/membean-logo.png" id="secret-1" class="h-10 mx-auto mb-8 cursor-default">
             <p class="text-gray-700 font-medium mb-6">Please sign in to continue</p>
             
             <div class="text-left">
@@ -68,7 +80,6 @@
                     <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" class="w-4 bg-white p-0.5"> Sign in with Google
                 </div>
                 <div class="border p-2 rounded text-sm font-bold text-gray-700">Sign in with SAML</div>
-                <p class="text-[10px] text-gray-500 mt-4">Not sure if your school has enabled single sign-on for Membean? Ask your teacher.</p>
             </div>
         </div>
         <div class="mb-footer">
@@ -76,11 +87,11 @@
         </div>
     </div>
 
-    <!-- 2. ONBOARDING -->
+    <!-- 3. ONBOARDING -->
     <div id="onboarding" class="hidden fixed inset-0 bg-[#0b0e14] z-[10001] flex items-center justify-center p-6">
         <div class="mb-card !bg-[#1a202c] !text-white border border-white/10 !max-w-md">
             <h2 class="text-2xl font-800 uppercase text-indigo-400 mb-2">Registration</h2>
-            <p class="text-slate-400 text-xs mb-6">Your handle is generated. You must provide your real name for Admin verification. Fake names result in a ban.</p>
+            <p class="text-slate-400 text-xs mb-6">You must provide your real name for Admin verification. Fake names result in a ban.</p>
             
             <div class="bg-black/40 p-4 rounded-xl mb-4 border border-indigo-500/20">
                 <p class="text-[10px] uppercase font-bold text-slate-500">Your Assigned Handle</p>
@@ -92,7 +103,8 @@
         </div>
     </div>
 
-    <!-- 3. MAIN APP -->
+    <!-- 4. MAIN APP -->
+    <div id="broadcast-banner" class="hidden"></div>
     <nav class="glass sticky top-0 z-50 px-8 py-4 flex justify-between items-center text-white">
         <div class="flex items-center space-x-3">
             <div class="bg-indigo-600 p-2 rounded-lg"><i class="fa-solid fa-couch"></i></div>
@@ -103,7 +115,7 @@
                 WIPE: <span id="wipe-timer" class="wipe-timer">07:30</span>
             </div>
             <button onclick="showPage('home')">Library</button>
-            <button onclick="showPage('chat')">Chat</button>
+            <button onclick="showPage('chat')">Chat & DMs</button>
             <button onclick="showPage('logs')">Logs</button>
             <button onclick="showPage('request')">Request</button>
             <span id="user-display" class="text-indigo-400 border-l border-white/10 pl-6"></span>
@@ -113,21 +125,35 @@
     <main class="max-w-7xl mx-auto px-6 py-12">
         <div id="home-page">
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6" id="game-list">
-                <!-- Game cards are same as before, I'll add one as a template -->
+                <!-- Example Games -->
                 <div class="game-card p-4" onclick="launchGame('Retro Bowl', 'https://game316009.konggames.com/gamez/0031/6009/live/index.html')">
                     <div class="h-40 bg-slate-900 rounded-2xl mb-4 overflow-hidden"><img src="https://i.ibb.co/dJWtJSfH/retro-bowl.jpg" class="w-full h-full object-cover"></div>
                     <h3 class="font-bold text-white">Retro Bowl</h3>
                     <div class="tag mt-2">Sports</div>
                 </div>
+                <div class="game-card p-4" onclick="launchGame('Slope', 'https://slope-unblocked-10x.github.io/action-games/slope/')">
+                    <div class="h-40 bg-slate-900 rounded-2xl mb-4 overflow-hidden"><img src="https://i.ibb.co/jvNVVNdD/slope.jpg" class="w-full h-full object-cover"></div>
+                    <h3 class="font-bold text-white">Slope</h3>
+                    <div class="tag mt-2">Skill</div>
+                </div>
             </div>
         </div>
 
-        <div id="chat-page" class="hidden h-[70vh] flex flex-col glass rounded-[40px] p-8">
-            <h2 class="text-indigo-400 font-800 uppercase mb-4">Snap-Chat Lobby (7:30 Wipe Cycle)</h2>
-            <div id="chat-box" class="flex-grow overflow-y-auto space-y-2 mb-4 pr-4"></div>
-            <div class="flex gap-4">
-                <input type="text" id="chat-input" class="flex-grow bg-slate-900 border border-white/10 p-4 rounded-2xl outline-none text-white" placeholder="Message...">
-                <button onclick="sendChat()" class="bg-indigo-600 px-10 rounded-2xl font-bold uppercase text-white">Send</button>
+        <div id="chat-page" class="hidden flex gap-6 h-[75vh]">
+            <!-- User Selection for DM -->
+            <div class="w-1/4 glass rounded-3xl p-6 overflow-y-auto">
+                <h3 class="text-xs uppercase font-bold text-slate-500 mb-4 tracking-widest">Direct Messages</h3>
+                <div id="dm-user-list" class="space-y-2"></div>
+            </div>
+            
+            <!-- Message Area -->
+            <div class="flex-grow flex flex-col glass rounded-3xl p-8">
+                <h2 id="chat-header" class="text-indigo-400 font-800 uppercase mb-4">Global Lobby</h2>
+                <div id="chat-box" class="flex-grow overflow-y-auto space-y-2 mb-4 pr-4"></div>
+                <div class="flex gap-4">
+                    <input type="text" id="chat-input" class="flex-grow bg-slate-900 border border-white/10 p-4 rounded-2xl outline-none text-white" placeholder="Wipes every 7.5 mins...">
+                    <button onclick="sendChat()" class="bg-indigo-600 px-10 rounded-2xl font-bold uppercase text-white">Send</button>
+                </div>
             </div>
         </div>
 
@@ -144,45 +170,50 @@
             </div>
         </div>
 
-        <!-- REQUESTS & LOGS -->
         <div id="request-page" class="hidden max-w-md mx-auto text-center py-20">
             <h2 class="text-3xl font-800 text-white uppercase mb-6">Request Game</h2>
             <input type="text" id="req-val" class="w-full bg-slate-900 p-4 rounded-xl text-white mb-4 border border-white/10" placeholder="Game Name...">
             <button onclick="submitRequest()" class="w-full bg-indigo-600 py-4 rounded-xl font-bold uppercase text-white">Submit to Admin</button>
         </div>
-        <div id="logs-page" class="hidden max-w-2xl mx-auto space-y-4" id="log-container"></div>
+        
+        <div id="logs-page" class="hidden max-w-2xl mx-auto space-y-4">
+            <h2 class="text-3xl font-800 text-white uppercase mb-6">Update Logs</h2>
+            <div id="log-container" class="space-y-4"></div>
+        </div>
     </main>
 
-    <!-- 4. ADMIN TERMINAL -->
+    <!-- 5. ADMIN TERMINAL -->
     <div id="admin-panel" class="hidden text-white">
         <div class="flex justify-between items-center mb-10">
-            <h2 class="text-3xl font-800 text-indigo-400 uppercase">Admin Terminal</h2>
+            <h2 class="text-3xl font-800 text-indigo-400 uppercase">Command Center</h2>
             <button onclick="toggleAdmin(false)" class="bg-white/10 px-6 py-2 rounded-xl font-bold">CLOSE</button>
         </div>
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
             <div class="bg-white/5 p-6 rounded-3xl border border-white/10">
-                <h3 class="font-bold text-green-400 mb-4">USER SPY (Real Names)</h3>
+                <h3 class="font-bold text-green-400 mb-4 uppercase">User Directory (Real Names)</h3>
                 <div id="admin-user-list" class="space-y-2 h-64 overflow-y-auto text-sm"></div>
             </div>
             <div class="bg-white/5 p-6 rounded-3xl border border-white/10">
-                <h3 class="font-bold text-red-400 mb-4">LIVE DM/CHAT SPY</h3>
+                <h3 class="font-bold text-red-400 mb-4 uppercase">Snap Spy (DMs & Chats)</h3>
                 <div id="admin-chat-spy" class="space-y-1 h-64 overflow-y-auto text-[10px] font-mono"></div>
             </div>
             <div class="bg-white/5 p-6 rounded-3xl border border-white/10 col-span-full">
-                <h3 class="font-bold text-indigo-400 mb-4">BROADCAST & LOGS</h3>
-                <input type="text" id="bc-msg" class="w-full bg-black p-4 rounded-xl mb-2 border border-white/10" placeholder="Broadcast Message...">
-                <button onclick="sendBroadcast()" class="bg-indigo-600 px-6 py-2 rounded-lg font-bold mr-4">BROADCAST</button>
-                <button onclick="addLog()" class="bg-white/10 px-6 py-2 rounded-lg font-bold">ADD TO UPDATE LOGS</button>
+                <h3 class="font-bold text-indigo-400 mb-4 uppercase">Post Announcement / Log</h3>
+                <input type="text" id="bc-msg" class="w-full bg-black p-4 rounded-xl mb-2 border border-white/10 text-white" placeholder="Broadcast/Log message...">
+                <div class="flex gap-4">
+                    <button onclick="sendBroadcast()" class="bg-red-600 px-6 py-2 rounded-lg font-bold">SET GLOBAL BROADCAST</button>
+                    <button onclick="addLog()" class="bg-indigo-600 px-6 py-2 rounded-lg font-bold">POST TO UPDATE LOGS</button>
+                </div>
             </div>
             <div class="bg-white/5 p-6 rounded-3xl border border-white/10 col-span-full">
-                <h3 class="font-bold text-yellow-400 mb-4">PENDING REQUESTS</h3>
+                <h3 class="font-bold text-yellow-400 mb-4 uppercase">Requests Hub</h3>
                 <div id="admin-req-list" class="space-y-2"></div>
             </div>
         </div>
     </div>
 
     <script>
-        // CONFIG
+        // FIREBASE CONFIG
         const firebaseConfig = {
             apiKey: "AIzaSyCcMjxoPLzKgIVsmXSOyXActDeU1PKy3lo",
             authDomain: "computer-pillow-ebca1.firebaseapp.com",
@@ -200,7 +231,10 @@
         let isAdmin = false;
         let sequence = [];
         let currentGame = "";
-        const FILTER = ["slur1", "slur2", "badword1", "racistword"]; // Add your words here
+        let currentChatTarget = "global";
+        let typedKeys = "";
+        let adminStep1 = false;
+        const FILTER = ["slur1", "slur2", "badword1", "racistword", "fuck", "nigger", "bitch", "shit"]; 
 
         // 1. CLOAK & SEQUENCE
         document.getElementById('secret-1').onclick = () => pushSeq(1);
@@ -211,7 +245,7 @@
             sequence.push(num);
             if(sequence.length === 3) {
                 if(JSON.stringify(sequence) === "[1,2,3]") {
-                    const pw = prompt("ENTER ACCESS CODE:");
+                    const pw = prompt("SECURITY PASSCODE REQUIRED:");
                     if(pw === "membean1234") {
                         document.getElementById('cloak-screen').classList.add('hidden');
                         checkAuth();
@@ -221,11 +255,32 @@
             }
         }
 
-        // 2. AUTH
+        // 2. ADMIN & LOCKDOWN COMMANDS
+        window.addEventListener('keydown', (e) => {
+            typedKeys += e.key;
+            if (typedKeys.length > 50) typedKeys = typedKeys.substring(20);
+
+            // Admin Terminal Chain
+            if (typedKeys.endsWith('159membean951')) { adminStep1 = true; }
+            if (adminStep1 && typedKeys.endsWith('159admin951')) {
+                const p = prompt("ADMIN PASSKEY:");
+                if (p === "membean1234") {
+                    isAdmin = true;
+                    toggleAdmin(true);
+                }
+                adminStep1 = false;
+            }
+
+            // Lockdown System
+            if (typedKeys.endsWith('1919lockserver2121')) { db.ref('settings/maintenance').set(true); }
+            if (typedKeys.endsWith('1919unlock2121')) { db.ref('settings/maintenance').set(false); }
+        });
+
+        // 3. AUTH & ONBOARDING
         function checkAuth() {
             if(!myHandle || !realName) {
-                const adj = ["Alpha", "Silent", "Shadow", "Hyper", "Retro", "Comfy"];
-                const noun = ["Couch", "Pillow", "Gamer", "Ghost", "Ninja", "User"];
+                const adj = ["Alpha", "Silent", "Shadow", "Retro", "Comfy", "Mystic"];
+                const noun = ["Couch", "Pillow", "Ghost", "Ninja", "Wizard", "Void"];
                 myHandle = adj[Math.floor(Math.random()*adj.length)] + noun[Math.floor(Math.random()*noun.length)] + Math.floor(Math.random()*99);
                 document.getElementById('assigned-handle').innerText = myHandle;
                 document.getElementById('onboarding').classList.remove('hidden');
@@ -240,16 +295,16 @@
             realName = name;
             localStorage.setItem('cp_handle', myHandle);
             localStorage.setItem('cp_realname', realName);
-            db.ref('users/' + myHandle).set({ realName: name, joined: Date.now() });
+            db.ref('users/' + myHandle).set({ realName: name, joined: Date.now(), status: 'online' });
             document.getElementById('onboarding').classList.add('hidden');
             startApp();
         }
 
-        // 3. THE JANITOR (7:30 WIPE)
+        // 4. THE JANITOR (7:30 SYNCED WIPE)
         function startJanitor() {
             setInterval(() => {
                 const now = Date.now();
-                const cycle = 450000; // 7.5 minutes
+                const cycle = 450000; // 7.5 mins
                 const timeLeft = cycle - (now % cycle);
                 
                 const m = Math.floor(timeLeft / 60000);
@@ -257,82 +312,101 @@
                 document.getElementById('wipe-timer').innerText = `${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`;
                 
                 if(timeLeft < 2000) { 
-                    db.ref('chats').remove(); // Auto-wipe DB
+                    db.ref('chats').remove(); 
+                    db.ref('dms').remove();
                 }
             }, 1000);
         }
 
-        // 4. CHAT & FILTER
+        // 5. CHAT & DM SYSTEM
+        function setChatTarget(target) {
+            currentChatTarget = target;
+            document.getElementById('chat-header').innerText = target === 'global' ? "Global Lobby" : "DM: " + target;
+            loadMessages();
+        }
+
         function sendChat() {
             const el = document.getElementById('chat-input');
             let txt = el.value.trim();
             if(!txt) return;
+            
+            // Filter
             FILTER.forEach(w => { txt = txt.replace(new RegExp(w, 'gi'), "****"); });
-            db.ref('chats').push({ user: myHandle, msg: txt, time: Date.now() });
+
+            if (currentChatTarget === 'global') {
+                db.ref('chats').push({ user: myHandle, msg: txt, time: Date.now() });
+            } else {
+                const threadId = [myHandle, currentChatTarget].sort().join('_');
+                db.ref('dms/' + threadId).push({ from: myHandle, to: currentChatTarget, msg: txt, time: Date.now() });
+            }
             el.value = "";
         }
 
-        // 5. COMMENTS & ADMIN
-        function postComment() {
-            const el = document.getElementById('comment-input');
-            let txt = el.value.trim();
-            if(!txt || !currentGame) return;
-            FILTER.forEach(w => { txt = txt.replace(new RegExp(w, 'gi'), "****"); });
-            db.ref(`comments/${currentGame}`).push({ user: myHandle, msg: txt });
-            el.value = "";
-        }
-
-        function deleteComment(id) {
-            if(isAdmin) db.ref(`comments/${currentGame}/${id}`).remove();
-        }
-
-        // 6. ADMIN TRIGGER
-        window.addEventListener('keydown', (e) => {
-            if(e.ctrlKey && e.shiftKey && e.key === 'A') {
-                const p = prompt("ADMIN PASSKEY:");
-                if(p === "membean1234") {
-                    isAdmin = true;
-                    toggleAdmin(true);
-                }
-            }
-        });
-
-        function toggleAdmin(show) {
-            document.getElementById('admin-panel').classList.toggle('hidden', !show);
-            if(show) {
-                db.ref('users').on('value', s => {
-                    let h = "";
-                    for(let k in s.val()) h += `<div class='p-2 bg-white/5 rounded'><b>${k}:</b> ${s.val()[k].realName}</div>`;
-                    document.getElementById('admin-user-list').innerHTML = h;
-                });
-                db.ref('chats').on('value', s => {
-                    let h = "";
-                    for(let k in s.val()) h += `<div>[${s.val()[k].user}]: ${s.val()[k].msg}</div>`;
-                    document.getElementById('admin-chat-spy').innerHTML = h;
-                });
-                db.ref('requests').on('value', s => {
-                    let h = "";
-                    for(let k in s.val()) h += `<div class='flex justify-between bg-white/5 p-2 rounded'><span>${s.val()[k].name}</span><button onclick="db.ref('requests/${k}').remove()">X</button></div>`;
-                    document.getElementById('admin-req-list').innerHTML = h;
-                });
+        function loadMessages() {
+            if (currentChatTarget === 'global') {
+                db.ref('chats').on('value', s => renderMessages(s.val()));
+            } else {
+                const threadId = [myHandle, currentChatTarget].sort().join('_');
+                db.ref('dms/' + threadId).on('value', s => renderMessages(s.val()));
             }
         }
 
-        // APP CORE
+        function renderMessages(data) {
+            let h = "";
+            for(let k in data) {
+                const item = data[k];
+                h += `<div class='chat-bubble'><b class='text-indigo-400'>${item.user || item.from}:</b> ${item.msg}</div>`;
+            }
+            const box = document.getElementById('chat-box');
+            box.innerHTML = h;
+            box.scrollTop = box.scrollHeight;
+        }
+
+        // 6. LOGS & BROADCASTS
+        function sendBroadcast() {
+            const msg = document.getElementById('bc-msg').value;
+            if(msg) db.ref('settings/broadcast').set(msg);
+            document.getElementById('bc-msg').value = "";
+        }
+
+        function addLog() {
+            const msg = document.getElementById('bc-msg').value;
+            if(msg) db.ref('logs').push({ title: "Update " + new Date().toLocaleDateString(), text: msg });
+            document.getElementById('bc-msg').value = "";
+        }
+
+        // 7. APP CORE LOGIC
         function startApp() {
             document.getElementById('user-display').innerText = myHandle;
             startJanitor();
-            db.ref('chats').on('value', s => {
-                let h = "";
-                for(let k in s.val()) h += `<div class='bg-white/5 p-3 rounded-xl border border-white/5'><b class='text-indigo-400'>${s.val()[k].user}:</b> ${s.val()[k].msg}</div>`;
-                const box = document.getElementById('chat-box');
-                box.innerHTML = h;
-                box.scrollTop = box.scrollHeight;
+            setChatTarget('global');
+
+            // Listen for Lockdown
+            db.ref('settings/maintenance').on('value', s => {
+                document.getElementById('maintenance-screen').classList.toggle('hidden', !s.val());
             });
+
+            // Listen for Broadcast
+            db.ref('settings/broadcast').on('value', s => {
+                const bar = document.getElementById('broadcast-banner');
+                if(s.val()) { bar.innerText = s.val(); bar.classList.remove('hidden'); }
+                else { bar.classList.add('hidden'); }
+            });
+
+            // Listen for Logs
             db.ref('logs').on('value', s => {
                 let h = "";
-                for(let k in s.val()) h += `<div class='glass p-6 rounded-3xl'><h4 class='font-bold'>${s.val()[k].title}</h4><p class='text-slate-400 text-sm'>${s.val()[k].text}</p></div>`;
+                for(let k in s.val()) h += `<div class='glass p-6 rounded-3xl'><h4 class='font-bold text-indigo-400'>${s.val()[k].title}</h4><p class='text-slate-400 text-sm'>${s.val()[k].text}</p></div>`;
                 document.getElementById('log-container').innerHTML = h;
+            });
+
+            // Listen for Users (DMs)
+            db.ref('users').on('value', s => {
+                let h = "<button onclick=\"setChatTarget('global')\" class='w-full text-left p-3 rounded-xl bg-white/5 font-bold text-xs uppercase text-indigo-400'># Global Lobby</button>";
+                for(let k in s.val()) {
+                    if(k !== myHandle) h += `<button onclick="setChatTarget('${k}')" class='w-full text-left p-3 rounded-xl hover:bg-white/5 transition text-sm'>@ ${k}</button>`;
+                }
+                document.getElementById('dm-user-list').innerHTML = h;
             });
         }
 
@@ -340,6 +414,7 @@
             currentGame = name.replace(/\s/g, '');
             showPage('player');
             document.getElementById('game-container').innerHTML = `<iframe src="${url}" class="w-full h-full border-none"></iframe>`;
+            
             db.ref(`comments/${currentGame}`).on('value', s => {
                 let h = "";
                 for(let k in s.val()) h += `
@@ -354,6 +429,10 @@
             });
         }
 
+        function deleteComment(id) {
+            if(isAdmin) db.ref(`comments/${currentGame}/${id}`).remove();
+        }
+
         function showPage(p) {
             ['home', 'chat', 'player', 'request', 'logs'].forEach(id => document.getElementById(id + '-page').classList.add('hidden'));
             document.getElementById(p + '-page').classList.remove('hidden');
@@ -363,13 +442,38 @@
             const v = document.getElementById('req-val').value;
             if(v) db.ref('requests').push({ name: v, user: myHandle });
             document.getElementById('req-val').value = "";
-            alert("Sent!");
+            alert("Request sent to Admin console.");
         }
 
-        function addLog() {
-            const t = prompt("Log Title:");
-            const x = prompt("Log Content:");
-            if(t && x) db.ref('logs').push({ title: t, text: x });
+        function toggleAdmin(show) {
+            document.getElementById('admin-panel').classList.toggle('hidden', !show);
+            if(show) {
+                db.ref('users').on('value', s => {
+                    let h = "";
+                    for(let k in s.val()) h += `<div class='p-2 bg-white/5 rounded'><b>${k}:</b> ${s.val()[k].realName}</div>`;
+                    document.getElementById('admin-user-list').innerHTML = h;
+                });
+                db.ref('chats').on('value', s => {
+                    let h = "";
+                    for(let k in s.val()) h += `<div>[GLOBAL] ${s.val()[k].user}: ${s.val()[k].msg}</div>`;
+                    document.getElementById('admin-chat-spy').innerHTML = h;
+                });
+                db.ref('dms').on('value', s => {
+                    let h = "";
+                    for(let thread in s.val()) {
+                        for(let k in s.val()[thread]) {
+                            const dm = s.val()[thread][k];
+                            h += `<div class='text-blue-400'>[DM ${thread}] ${dm.from}: ${dm.msg}</div>`;
+                        }
+                    }
+                    document.getElementById('admin-chat-spy').innerHTML += h;
+                });
+                db.ref('requests').on('value', s => {
+                    let h = "";
+                    for(let k in s.val()) h += `<div class='flex justify-between bg-white/5 p-2 rounded'><span>${s.val()[k].name}</span><button onclick="db.ref('requests/${k}').remove()">X</button></div>`;
+                    document.getElementById('admin-req-list').innerHTML = h;
+                });
+            }
         }
     </script>
 </body>
